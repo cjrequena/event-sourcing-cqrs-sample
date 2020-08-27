@@ -29,7 +29,7 @@ public class BankAccountProjection {
 
   @StreamListener(value = StreamChannelConfiguration.EVENT_INPUT_CHANNEL, condition = "headers['operation']=='AccountCreatedEvent'")
   public synchronized void listener(AccountCreatedEventDTO dto) throws InterruptedException {
-    log.debug("sourced::event::received -> {}", dto);
+    log.debug("event::sourced::received -> {}", dto);
     if (dto.getEventType().equals(EEvent.ACCOUNT_CREATED_EVENT.getCode())) {
       BankAccountDTO bankAccountDTO = dto.getPayload();
       BankAccountEntity entity = new BankAccountEntity();
@@ -47,7 +47,7 @@ public class BankAccountProjection {
 
   @StreamListener(value = StreamChannelConfiguration.EVENT_INPUT_CHANNEL, condition = "headers['operation']=='AccountCreditedEvent'")
   public synchronized void listener2(AccountCreditedEventDTO dto) {
-    log.debug("sourced::event::received -> {}", dto);
+    log.debug("event::sourced::received -> {}", dto);
     if (dto.getEventType().equals(EEvent.ACCOUNT_CREDITED_EVENT.getCode())) {
       MoneyAmountDTO moneyAmountDTO =  dto.getPayload();
       final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(dto.getAggregateId());
@@ -63,7 +63,7 @@ public class BankAccountProjection {
 
   @StreamListener(value = StreamChannelConfiguration.EVENT_INPUT_CHANNEL, condition = "headers['operation']=='AccountDebitedEvent'")
   public synchronized void listener3(AccountDebitedEventDTO dto) throws InterruptedException {
-    log.debug("sourced::event::received -> {}", dto);
+    log.debug("event::sourced::received -> {}", dto);
     if (dto.getEventType().equals(EEvent.ACCOUNT_DEBITED_EVENT.getCode())) {
       MoneyAmountDTO moneyAmountDTO = dto.getPayload();
       final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(dto.getAggregateId());

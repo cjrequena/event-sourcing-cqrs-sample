@@ -72,7 +72,7 @@ public class MainApplication implements CommandLineRunner {
     accountCommandService.debitMoneyFromAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Debit 69000 to the account
     moneyAmountDTO.setAmount(BigDecimal.valueOf(69000));
     accountCommandService.creditMoneyToAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Credit 69000 to the account
-    // Bill gates balance should be 1369000
+    // Steve jobs balance should be 1369000
 
     this.accountCommandService.printAccountsInfo();
   }

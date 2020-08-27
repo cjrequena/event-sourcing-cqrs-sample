@@ -56,6 +56,7 @@ public class AccountCommandService {
     eventPublisher.publishEvent(event);
   }
 
+  @Transactional
   public void creditMoneyToAccount(UUID accountId, MoneyAmountDTO moneyCreditDTO) {
     AccountCreditedEventDTO accountCreditedEventDTO = new AccountCreditedEventDTO();
     accountCreditedEventDTO.setAggregateId(accountId);
@@ -69,6 +70,7 @@ public class AccountCommandService {
     eventPublisher.publishEvent(event);
   }
 
+  @Transactional
   public void debitMoneyFromAccount(UUID accountId, MoneyAmountDTO moneyCreditDTO) {
     AccountDebitedEventDTO accountDebitedEventDTO = new AccountDebitedEventDTO();
     accountDebitedEventDTO.setAggregateId(accountId);

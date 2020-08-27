@@ -30,7 +30,7 @@ public class EventSourcingHandler {
     EventDTO eventDTO = (EventDTO) event.getSource();
     final Map headers = event.getHeaders();
     messageChannel.send(MessageBuilder.withPayload((eventDTO)).copyHeaders(headers).build());
-    log.debug("Event sourced {}", eventDTO.toString());
+    log.debug("event::sourced {}", eventDTO.toString());
   }
 
 }
