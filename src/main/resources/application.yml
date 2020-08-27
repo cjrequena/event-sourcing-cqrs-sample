@@ -48,30 +48,29 @@ logging.config: classpath:log4j2-local.xml # Location of the logging configurati
 logging.file: log4j2-local.xml # Log file name (for instance, `myapp.log`). Names can be an exact location or relative to the current directory.
 logging.level: # Log levels severity mapping. For instance, `logging.level.org.springframework: DEBUG`.
   org.springframework: INFO
-  com.sample: DEBUG
-  com.zaxxer.hikari.HikariConfig: DEBUG
-  org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-  io.swagger.models.*: ERROR
+  com.cjrequena.sample: DEBUG
+  com.zaxxer.hikari.HikariConfig: INFO
+  org.hibernate.type.descriptor.sql.BasicBinder: ERROR
 
 # DATABASE
-spring.datasource.postgres.type: com.zaxxer.hikari.HikariDataSource
-spring.datasource.postgres.jdbcUrl: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/foo
-spring.datasource.postgres.driver-class-name: org.postgresql.Driver
-spring.datasource.postgres.username: postgres
-spring.datasource.postgres.password: postgres
-# https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
-spring.datasource.postgres.pool-name: HikariPool
-spring.datasource.postgres.connection-timeout: 20000
-spring.datasource.postgres.minimum-idle: 5
-spring.datasource.postgres.maximum-pool-size: 12
-spring.datasource.postgres.idle-timeout: 300000
-spring.datasource.postgres.max-lifetime: 1200000
-spring.datasource.postgres.auto-commit: false
+#spring.datasource.postgres.type: com.zaxxer.hikari.HikariDataSource
+#spring.datasource.postgres.jdbcUrl: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/foo
+#spring.datasource.postgres.driver-class-name: org.postgresql.Driver
+#spring.datasource.postgres.username: postgres
+#spring.datasource.postgres.password: postgres
+## https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
+#spring.datasource.postgres.pool-name: HikariPool
+#spring.datasource.postgres.connection-timeout: 20000
+#spring.datasource.postgres.minimum-idle: 5
+#spring.datasource.postgres.maximum-pool-size: 12
+#spring.datasource.postgres.idle-timeout: 300000
+#spring.datasource.postgres.max-lifetime: 1200000
+#spring.datasource.postgres.auto-commit: false
 # JPA specific configs
-spring.jpa.open-in-view: true
+spring.jpa.open-in-view: false
 #spring.jpa.properties.hibernate.connection.provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
 spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-spring.jpa.properties.hibernate.show_sql: true
+spring.jpa.properties.hibernate.show_sql: false
 spring.jpa.properties.hibernate.format_sql: true
 spring.jpa.properties.hibernate.use_sql: true
 spring.jpa.properties.hibernate.hibernate.dialect: true
@@ -80,6 +79,38 @@ spring.jpa.properties.hibernate.search.autoregister_listeners: false
 spring.jpa.properties.hibernate.bytecode.use_reflection_optimizer: false
 # flyway
 spring.flyway.enabled: false
+
+spring.cloud.stream:
+  defaultBinder: kafka # The default binder to use, if multiple binders are configured. See Multiple Binders on the Classpath.
+spring.cloud.stream.bindings:
+  event_output_channel:
+    destination: event.sourced # The target destination of a channel on the bound middleware (e.g., the RabbitMQ exchange or Kafka topic).
+    content-type: application/json
+    binder: kafka # The binder used by this binding. See Multiple Binders on the Classpath for details.
+  event_input_channel:
+    destination: event.sourced # The target destination of a channel on the bound middleware (e.g., the RabbitMQ exchange or Kafka topic).
+    content-type: application/json
+    binder: kafka # The binder used by this binding. See Multiple Binders on the Classpath for details.
+    group: ${random.uuid} # The consumer group of the channel. Applies only to inbound bindings. See Consumer Groups.
+spring.cloud.stream.kafka.binder:
+  brokers: localhost # A list of brokers to which the Kafka binder will connect.
+  defaultBrokerPort: 9092 # This sets the default port when no port is configured in the broker list
+  zkNodes: localhost # A list of ZooKeeper nodes to which the Kafka binder can connect.
+  defaultZkPort: 2181 # This sets the default port when no port is configured in the node list
+  #configuration: # Key/Value map of client properties (both producers and consumer) passed to all clients created by the binder. Due to the fact that these properties will be used by both producers and consumers, usage should be restricted to common properties, especially security settings. Default: Empty map.
+  #headers: #  The list of custom headers that will be transported by the binder. Default: empty.
+  healthTimeout: 60 # The time to wait to get partition information in seconds; default 60. Health will report as down if this timer expires.
+  offsetUpdateTimeWindow: 10000 # The frequency, in milliseconds, with which offsets are saved. Ignored if 0.
+  offsetUpdateCount: 0 # The frequency, in number of updates, which which consumed offsets are persisted. Ignored if 0. Mutually exclusive with offsetUpdateTimeWindow
+  requiredAcks: 1 # The number of required acks on the broker.
+  minPartitionCount: 1 # Effective only if autoCreateTopics or autoAddPartitions is set
+  replicationFactor: 1 # The replication factor of auto-created topics if autoCreateTopics is active.
+  autoCreateTopics: true # If set to true, the binder will create new topics automatically.
+  autoAddPartitions: true # If set to true, the binder will create add new partitions if required
+  socketBufferSize: 1000000000 # Size (in bytes) of the socket buffer to be used by the Kafka consumers
+spring.cloud.sleuth:
+  json:
+    enabled: false
 
 # swagger configuration
 springdoc:

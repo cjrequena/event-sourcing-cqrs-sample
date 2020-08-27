@@ -21,6 +21,8 @@
 		<spring-boot-dependencies.version>2.3.3.RELEASE</spring-boot-dependencies.version>
 		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies -->
 		<spring-cloud-dependencies.version>Hoxton.SR7</spring-cloud-dependencies.version>
+		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-webflux-ui -->
+		<springdoc-openapi-webflux-ui.version>1.4.4</springdoc-openapi-webflux-ui.version>
 		<!-- -->
 		<start-class>com.cjrequena.sample.MainApplication</start-class>
 
@@ -136,7 +138,17 @@
 			<artifactId>spring-cloud-stream-test-support</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <!-- -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-binder-kafka</artifactId>
+		</dependency>
+		<!-- swagger -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-webflux-ui</artifactId>
+			<version>${springdoc-openapi-webflux-ui.version}</version>
+		</dependency>
+		<!-- -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -151,6 +163,17 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 	<!-- -->
 	<dependencyManagement>
