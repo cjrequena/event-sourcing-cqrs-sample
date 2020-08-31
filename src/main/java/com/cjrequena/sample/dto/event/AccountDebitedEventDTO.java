@@ -8,7 +8,7 @@ import lombok.ToString;
 import java.io.Serializable;
 
 @Data
-@ToString(callSuper=true, includeFieldNames=true)
+@ToString(callSuper = true, includeFieldNames = true)
 @EqualsAndHashCode(callSuper = false)
 public class AccountDebitedEventDTO extends EventDTO<MoneyAmountDTO> implements Serializable {
 

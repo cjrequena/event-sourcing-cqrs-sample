@@ -1,7 +1,7 @@
 package com.cjrequena.sample.configuration;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * <p>
@@ -15,6 +15,6 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
  *
  */
 @Configuration
-public class WebConfiguration implements WebFluxConfigurer {
+public class WebConfiguration implements WebMvcConfigurer {
 
 }

@@ -23,7 +23,7 @@ public class BankAccountProjection {
   private final BankAccountRepository bankAccountRepository;
 
   @Autowired
-  public BankAccountProjection(BankAccountRepository bankAccountRepository){
+  public BankAccountProjection(BankAccountRepository bankAccountRepository) {
     this.bankAccountRepository = bankAccountRepository;
   }
 
@@ -37,9 +37,9 @@ public class BankAccountProjection {
       entity.setOwner(bankAccountDTO.getOwner());
       entity.setBalance(bankAccountDTO.getBalance());
       final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(dto.getAggregateId());
-      if(bankAccountEntityOptional.isEmpty()) {
+      if (bankAccountEntityOptional.isEmpty()) {
         this.bankAccountRepository.save(entity);
-      }else{
+      } else {
         log.error("Bank account {} already exists", dto.getAggregateId());
       }
     }
@@ -49,13 +49,13 @@ public class BankAccountProjection {
   public synchronized void listener2(AccountCreditedEventDTO dto) {
     log.debug("event::sourced::received -> {}", dto);
     if (dto.getEventType().equals(EEvent.ACCOUNT_CREDITED_EVENT.getCode())) {
-      MoneyAmountDTO moneyAmountDTO =  dto.getPayload();
+      MoneyAmountDTO moneyAmountDTO = dto.getPayload();
       final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(dto.getAggregateId());
-      if(bankAccountEntityOptional.isPresent()) {
+      if (bankAccountEntityOptional.isPresent()) {
         BankAccountEntity entity = bankAccountEntityOptional.get();
         entity.setBalance(entity.getBalance().add(moneyAmountDTO.getAmount()));
         this.bankAccountRepository.save(entity);
-      }else{
+      } else {
         log.error("Bank account {} does not exist", dto.getAggregateId());
       }
     }
@@ -67,11 +67,11 @@ public class BankAccountProjection {
     if (dto.getEventType().equals(EEvent.ACCOUNT_DEBITED_EVENT.getCode())) {
       MoneyAmountDTO moneyAmountDTO = dto.getPayload();
       final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(dto.getAggregateId());
-      if(bankAccountEntityOptional.isPresent()) {
+      if (bankAccountEntityOptional.isPresent()) {
         BankAccountEntity entity = bankAccountEntityOptional.get();
         entity.setBalance(entity.getBalance().subtract(moneyAmountDTO.getAmount()));
         this.bankAccountRepository.save(entity);
-      }else{
+      } else {
         log.error("Bank account {} does not exist", dto.getAggregateId());
       }
     }

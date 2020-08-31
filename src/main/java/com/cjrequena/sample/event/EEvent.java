@@ -12,7 +12,6 @@ public enum EEvent {
   ACCOUNT_CREDITED_EVENT("AccountCreditedEvent"),
   ACCOUNT_DEBITED_EVENT("AccountDebitedEvent");
 
-
   /** The code. */
   private final String code;
 
@@ -23,15 +22,6 @@ public enum EEvent {
    */
   EEvent(String code) {
     this.code = code;
-  }
-
-  /**
-   * Gets the code.
-   *
-   * @return the code
-   */
-  public String getCode() {
-    return code;
   }
 
   /**
@@ -47,5 +37,14 @@ public enum EEvent {
       }
     }
     return null;
+  }
+
+  /**
+   * Gets the code.
+   *
+   * @return the code
+   */
+  public String getCode() {
+    return code;
   }
 }

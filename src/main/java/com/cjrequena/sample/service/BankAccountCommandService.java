@@ -22,16 +22,26 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * <p>
+ * <p>
+ * <p>
+ * <p>
+ *
+ * @author cjrequena
+ *
+ */
 @Slf4j
 @Service
-public class AccountCommandService {
+public class BankAccountCommandService {
 
   private ApplicationEventPublisher eventPublisher;
   private MessageChannel eventOutputChannel;
-  private  BankAccountRepository bankAccountRepository;
+  private BankAccountRepository bankAccountRepository;
 
   @Autowired
-  public AccountCommandService(ApplicationEventPublisher commandPublisher, BankAccountRepository bankAccountRepository, @Qualifier(StreamChannelConfiguration.EVENT_OUTPUT_CHANNEL) MessageChannel eventOutputChannel) {
+  public BankAccountCommandService(ApplicationEventPublisher commandPublisher, BankAccountRepository bankAccountRepository,
+    @Qualifier(StreamChannelConfiguration.EVENT_OUTPUT_CHANNEL) MessageChannel eventOutputChannel) {
     this.eventPublisher = commandPublisher;
     this.eventOutputChannel = eventOutputChannel;
     this.bankAccountRepository = bankAccountRepository;
@@ -42,8 +52,8 @@ public class AccountCommandService {
    * @param bankAccountDTO
    */
   @Transactional
-  public void createAccount(BankAccountDTO bankAccountDTO) {
-    //    bankAccountDTO.setId(UUID.randomUUID().toString());
+  public BankAccountDTO createAccount(BankAccountDTO bankAccountDTO) {
+    bankAccountDTO.setAccountId(UUID.randomUUID());
     AccountCreatedEventDTO accountCreatedEventDTO = new AccountCreatedEventDTO();
     accountCreatedEventDTO.setAggregateId(bankAccountDTO.getAccountId());
     accountCreatedEventDTO.setEventId(UUID.randomUUID());
@@ -54,6 +64,7 @@ public class AccountCommandService {
     Event<AccountCreatedEventDTO> event = new Event(accountCreatedEventDTO, eventOutputChannel);
     event.addHeader("operation", EEvent.ACCOUNT_CREATED_EVENT.getCode());
     eventPublisher.publishEvent(event);
+    return bankAccountDTO;
   }
 
   @Transactional
@@ -87,7 +98,7 @@ public class AccountCommandService {
   public void printAccountsInfo() {
     final List<BankAccountEntity> all = this.bankAccountRepository.findAll();
     for (BankAccountEntity bankAccountEntity : all) {
-      log.debug("accountId: {} owner: {} balance {}",bankAccountEntity.getAccountId(), bankAccountEntity.getOwner(), bankAccountEntity.getBalance());
+      log.debug("accountId: {} owner: {} balance {}", bankAccountEntity.getAccountId(), bankAccountEntity.getOwner(), bankAccountEntity.getBalance());
     }
   }
 }

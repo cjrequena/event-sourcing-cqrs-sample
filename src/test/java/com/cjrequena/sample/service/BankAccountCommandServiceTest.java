@@ -17,16 +17,16 @@ import java.math.BigDecimal;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MainApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class AccountCommandServiceTest {
+public class BankAccountCommandServiceTest {
 
   @Autowired
-  private AccountCommandService accountCommandService;
+  private BankAccountCommandService bankAccountCommandService;
 
   @Test
   public void test() throws Exception {
     BankAccountDTO dto = new BankAccountDTO();
     dto.setOwner("cjrequena");
     dto.setBalance(BigDecimal.TEN);
-    accountCommandService.createAccount(dto);
+    bankAccountCommandService.createAccount(dto);
   }
 }

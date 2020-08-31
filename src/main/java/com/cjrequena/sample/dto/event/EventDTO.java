@@ -47,45 +47,45 @@ public class EventDTO<T> implements DTO, Serializable {
   /**
    * eventId
    */
-  @JsonProperty(value = "eventId", required = true)
+  @JsonProperty(value = "event_id", required = true)
   @NotNull(message = "Event ID is mandatory")
   @Pattern(regexp = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", message = "Format is not valid")
-  @Getter(onMethod = @__({@JsonProperty("eventId")}))
+  @Getter(onMethod = @__({@JsonProperty("event_id")}))
   private UUID eventId;
 
   /**
    * aggregateId
    */
-  @JsonProperty(value = "aggregateId", required = true)
+  @JsonProperty(value = "aggregate_id", required = true)
   @NotNull(message = "Aggregate ID is mandatory")
   @Pattern(regexp = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", message = "Format is not valid")
-  @Getter(onMethod = @__({@JsonProperty("aggregateId")}))
+  @Getter(onMethod = @__({@JsonProperty("aggregate_id")}))
   private UUID aggregateId;
 
   /**
    * eventType
    */
-  @JsonProperty(value = "eventType", required = true)
+  @JsonProperty(value = "event_type", required = true)
   @NotNull(message = "Event Type is mandatory")
   @Pattern(regexp = "SourcedTransferUnitCreated|SourcedTransferUnitChanged|SourcedTransferUnitRetired", message = "Value not accepted")
-  @Getter(onMethod = @__({@JsonProperty("eventType")}))
+  @Getter(onMethod = @__({@JsonProperty("event_type")}))
   private String eventType;
 
   /**
    * eventVersion
    */
-  @JsonProperty(value = "eventVersion", required = true)
+  @JsonProperty(value = "event_version", required = true)
   @NotNull(message = "Event Version is mandatory")
-  @Getter(onMethod = @__({@JsonProperty("eventVersion")}))
+  @Getter(onMethod = @__({@JsonProperty("event_version")}))
   private String eventVersion;
 
   /**
    * eventTimeStamp
    */
-  @JsonProperty(value = "eventTimeStamp", required = true)
+  @JsonProperty(value = "event_time_stamp", required = true)
   @NotNull(message = "Event Timestamp is mandatory")
   @Pattern(regexp = "[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))T(([0-1][0-9])|(2[0-3])):([0-5][0-9]):([0-5][0-9])Z", message = "Format date time is not valid")
-  @Getter(onMethod = @__({@JsonProperty("eventTimeStamp")}))
+  @Getter(onMethod = @__({@JsonProperty(value = "event_time_stamp", required = true)}))
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)
   @JsonSerialize(using = LocalDateTimeSerializer.class)
   private LocalDateTime eventTimeStamp;
@@ -93,17 +93,17 @@ public class EventDTO<T> implements DTO, Serializable {
   /**
    * producedBy
    */
-  @JsonProperty(value = "producedBy", required = true)
+  @JsonProperty(value = "produced_by", required = true)
   @NotNull(message = "Produced by is mandatory")
-  @Getter(onMethod = @__({@JsonProperty("producedBy")}))
+  @Getter(onMethod = @__({@JsonProperty(value = "produced_by", required = true)}))
   private String producedBy;
 
   /**
    * producedByVersion
    */
-  @JsonProperty(value = "producedByVersion", required = true)
+  @JsonProperty(value = "produced_by_version", required = true)
   @NotNull(message = "Produced by version is mandatory")
-  @Getter(onMethod = @__({@JsonProperty("producedByVersion")}))
+  @Getter(onMethod = @__({@JsonProperty(value = "produced_by_version", required = true)}))
   private String producedByVersion;
 
   /**
@@ -111,6 +111,6 @@ public class EventDTO<T> implements DTO, Serializable {
    */
   @JsonProperty(value = "payload", required = true)
   @NotNull(message = "Payload is mandatory")
-  @Getter(onMethod = @__({@JsonProperty("payload")}))
+  @Getter(onMethod = @__({@JsonProperty(value = "payload", required = true)}))
   private T payload;
 }

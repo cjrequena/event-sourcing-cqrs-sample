@@ -20,8 +20,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 public class BankAccountEntity {
-    @Id
-    private UUID accountId;
-    private String owner;
-    private BigDecimal balance;
+  @Id
+  private UUID accountId;
+  private String owner;
+  private BigDecimal balance;
 }

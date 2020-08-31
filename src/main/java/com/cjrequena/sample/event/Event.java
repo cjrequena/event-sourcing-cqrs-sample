@@ -24,15 +24,15 @@ public class Event<T> extends ApplicationEvent {
     this.messageChannel = messageChannel;
   }
 
-  public void addHeader(String key, Object value){
+  public void addHeader(String key, Object value) {
     headers.put(key, value);
   }
 
-  public Map<String, Object> getHeaders(){
+  public Map<String, Object> getHeaders() {
     return new HashMap<>(headers);
   }
 
-  public MessageChannel getMessageChannel(){
+  public MessageChannel getMessageChannel() {
     return this.messageChannel;
   }
 }

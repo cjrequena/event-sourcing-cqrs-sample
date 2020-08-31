@@ -17,5 +17,5 @@ import java.math.BigDecimal;
 })
 @JsonTypeName("payload")
 public class MoneyAmountDTO implements DTO, Serializable {
-    private BigDecimal amount;
+  private BigDecimal amount;
 }
