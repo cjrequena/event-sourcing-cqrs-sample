@@ -6,6 +6,8 @@ import com.cjrequena.sample.db.repository.BankAccountRepository;
 import com.cjrequena.sample.db.rsql.CustomRsqlVisitor;
 import com.cjrequena.sample.db.rsql.RsqlSearchOperation;
 import com.cjrequena.sample.dto.BankAccountDTO;
+import com.cjrequena.sample.exception.EErrorCode;
+import com.cjrequena.sample.exception.ServiceException;
 import com.cjrequena.sample.mapper.BankAccountDtoEntityMapper;
 import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
@@ -42,26 +44,34 @@ public class BankAccountQueryService {
     this.bankAccountDtoEntityMapper = bankAccountDtoEntityMapper;
   }
 
-  public BankAccountDTO retrieveById(UUID accountId) {
-    //--
-    Optional<BankAccountEntity> entity = this.bankAccountRepository.findById(accountId);
-    if (!entity.isPresent()) {
-      log.error("Bank account {} does not exist", accountId);
-      return null;
+  public BankAccountDTO retrieveById(UUID accountId) throws ServiceException {
+    try {
+      //--
+      Optional<BankAccountEntity> entity = this.bankAccountRepository.findById(accountId);
+      if (!entity.isPresent()) {
+        log.error("Bank account {} does not exist", accountId);
+        throw new ServiceException(EErrorCode.NOT_FOUND_ERROR.getErrorCode());
+      }
+      return bankAccountDtoEntityMapper.toDTO(entity.get());
+    } catch (ServiceException ex) {
+      log.error("{}", ex.getMessage());
+      throw ex;
+    } catch (Exception ex) {
+      log.error("{}", ex.getMessage());
+      throw new ServiceException(EErrorCode.INTERNAL_SERVER_ERROR.getErrorCode(), ex);
     }
-    return bankAccountDtoEntityMapper.toDTO(entity.get());
     //--
   }
 
-  public Page retrieve(String search, String sort, Integer offset, Integer limit) throws ExceptionInInitializerError {
+  public Page retrieve(String filters, String sort, Integer offset, Integer limit) throws ServiceException {
     //--
     try {
       Page<BankAccountEntity> page;
       Specification<BankAccountEntity> specification;
       Pageable pageable = OffsetLimitRequestBuilder.create(offset, limit, sort);
 
-      if (search != null) {
-        Node rootNode = new RSQLParser(RsqlSearchOperation.defaultOperators()).parse(search);
+      if (filters != null) {
+        Node rootNode = new RSQLParser(RsqlSearchOperation.defaultOperators()).parse(filters);
         specification = rootNode.accept(new CustomRsqlVisitor<>());
         page = this.bankAccountRepository.findAll(specification, pageable);
       } else {
@@ -71,7 +81,7 @@ public class BankAccountQueryService {
       return page.map(entity -> bankAccountDtoEntityMapper.toDTO(entity));
     } catch (PropertyReferenceException ex) {
       log.error("{}", ex.getMessage());
-      return null;
+      throw new ServiceException(EErrorCode.BAD_REQUEST_ERROR.getErrorCode(), ex);
     }
     //--
   }

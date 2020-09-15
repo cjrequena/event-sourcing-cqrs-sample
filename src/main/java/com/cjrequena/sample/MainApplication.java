@@ -9,6 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.math.BigDecimal;
+
 /**
  *
  * <p></p>
@@ -30,43 +32,42 @@ public class MainApplication implements CommandLineRunner {
     BankAccountDTO bankAccountDTO = new BankAccountDTO();
     MoneyAmountDTO moneyAmountDTO = new MoneyAmountDTO();
 
-    //    bankAccountDTO.setOwner("John Lennon");
-    //    bankAccountDTO.setBalance(BigDecimal.valueOf(100));
-    //    bankAccountCommandService.createAccount(bankAccountDTO); // Account created with balance 100
-    //    bankAccountCommandService.createAccount(bankAccountDTO); // Should log an error on projection layer, because the Bank account was already created.
-    //    moneyAmountDTO.setAmount(BigDecimal.valueOf(50));
-    //    bankAccountCommandService.creditMoneyToAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Credit 50 to the account
-    //    moneyAmountDTO.setAmount(BigDecimal.valueOf(100));
-    //    bankAccountCommandService.debitMoneyFromAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Debit 100 to the account
-    //    moneyAmountDTO.setAmount(BigDecimal.valueOf(100));
-    //    bankAccountCommandService.creditMoneyToAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Credit 100 to the account
-    //    // John lennon balance should be 150
-    //
-    //    bankAccountDTO = new BankAccountDTO();
-    //    moneyAmountDTO = new MoneyAmountDTO();
-    //    bankAccountDTO.setOwner("Bill Gates");
-    //    bankAccountDTO.setBalance(BigDecimal.valueOf(250));
-    //    bankAccountCommandService.createAccount(bankAccountDTO); // Account created with balance 250
-    //    moneyAmountDTO.setAmount(BigDecimal.valueOf(50));
-    //    bankAccountCommandService.creditMoneyToAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Credit 50 to the account
-    //    moneyAmountDTO.setAmount(BigDecimal.valueOf(100));
-    //    bankAccountCommandService.debitMoneyFromAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Debit 100 to the account
-    //    moneyAmountDTO.setAmount(BigDecimal.valueOf(120));
-    //    bankAccountCommandService.creditMoneyToAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Credit 120 to the account
-    //    // Bill gates balance should be 320
-    //
-    //    bankAccountDTO = new BankAccountDTO();
-    //    moneyAmountDTO = new MoneyAmountDTO();
-    //    bankAccountDTO.setOwner("Steve Jobs");
-    //    bankAccountDTO.setBalance(BigDecimal.valueOf(1000000)); // Account created with balance 1000000
-    //    bankAccountCommandService.createAccount(bankAccountDTO);
-    //    moneyAmountDTO.setAmount(BigDecimal.valueOf(369000));
-    //    bankAccountCommandService.creditMoneyToAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Credit 3690000 to the account
-    //    moneyAmountDTO.setAmount(BigDecimal.valueOf(69000));
-    //    bankAccountCommandService.debitMoneyFromAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Debit 69000 to the account
-    //    moneyAmountDTO.setAmount(BigDecimal.valueOf(69000));
-    //    bankAccountCommandService.creditMoneyToAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Credit 69000 to the account
-    //    // Steve jobs balance should be 1369000
+//    bankAccountDTO.setOwner("John Lennon");
+//    bankAccountDTO.setBalance(BigDecimal.valueOf(100));
+//    bankAccountCommandService.createAccount(bankAccountDTO); // Account created with balance 100
+//    moneyAmountDTO.setAmount(BigDecimal.valueOf(50));
+//    bankAccountCommandService.creditMoneyToAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Credit 50 to the account
+//    moneyAmountDTO.setAmount(BigDecimal.valueOf(100));
+//    bankAccountCommandService.debitMoneyFromAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Debit 100 to the account
+//    moneyAmountDTO.setAmount(BigDecimal.valueOf(100));
+//    bankAccountCommandService.creditMoneyToAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Credit 100 to the account
+//    // John lennon balance should be 150
+//
+//    bankAccountDTO = new BankAccountDTO();
+//    moneyAmountDTO = new MoneyAmountDTO();
+//    bankAccountDTO.setOwner("Bill Gates");
+//    bankAccountDTO.setBalance(BigDecimal.valueOf(250));
+//    bankAccountCommandService.createAccount(bankAccountDTO); // Account created with balance 250
+//    moneyAmountDTO.setAmount(BigDecimal.valueOf(50));
+//    bankAccountCommandService.creditMoneyToAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Credit 50 to the account
+//    moneyAmountDTO.setAmount(BigDecimal.valueOf(100));
+//    bankAccountCommandService.debitMoneyFromAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Debit 100 to the account
+//    moneyAmountDTO.setAmount(BigDecimal.valueOf(120));
+//    bankAccountCommandService.creditMoneyToAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Credit 120 to the account
+//    // Bill gates balance should be 320
+//
+//    bankAccountDTO = new BankAccountDTO();
+//    moneyAmountDTO = new MoneyAmountDTO();
+//    bankAccountDTO.setOwner("Steve Jobs");
+//    bankAccountDTO.setBalance(BigDecimal.valueOf(1000000)); // Account created with balance 1000000
+//    bankAccountCommandService.createAccount(bankAccountDTO);
+//    moneyAmountDTO.setAmount(BigDecimal.valueOf(369000));
+//    bankAccountCommandService.creditMoneyToAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Credit 3690000 to the account
+//    moneyAmountDTO.setAmount(BigDecimal.valueOf(69000));
+//    bankAccountCommandService.debitMoneyFromAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Debit 69000 to the account
+//    moneyAmountDTO.setAmount(BigDecimal.valueOf(69000));
+//    bankAccountCommandService.creditMoneyToAccount(bankAccountDTO.getAccountId(), moneyAmountDTO); // Credit 69000 to the account
+//    // Steve jobs balance should be 1369000
 
     this.bankAccountCommandService.printAccountsInfo();
   }

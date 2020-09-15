@@ -2,6 +2,7 @@ package com.cjrequena.sample.web.controller;
 
 import com.cjrequena.sample.dto.BankAccountDTO;
 import com.cjrequena.sample.dto.MoneyAmountDTO;
+import com.cjrequena.sample.exception.ServiceException;
 import com.cjrequena.sample.service.BankAccountCommandService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,7 +12,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -83,7 +83,7 @@ public class BankAccountCommandController {
     path = "/bank-accounts",
     produces = {APPLICATION_JSON_VALUE}
   )
-  public ResponseEntity<Void> create(@Parameter @Valid @RequestBody BankAccountDTO dto, BindingResult bindingResult, HttpServletRequest request, UriComponentsBuilder ucBuilder) {
+  public ResponseEntity<Void> create(@Parameter @Valid @RequestBody BankAccountDTO dto, BindingResult bindingResult, HttpServletRequest request, UriComponentsBuilder ucBuilder) throws ServiceException {
     //--
     //
     dto = bankAccountCommandService.createAccount(dto);
@@ -119,7 +119,7 @@ public class BankAccountCommandController {
   )
   @PutMapping(path = "/{account_id}/credit", produces = {APPLICATION_JSON_VALUE})
   public ResponseEntity<Void> creditMoneyToAccount(@PathVariable(value = "account_id") UUID accountId, @RequestBody MoneyAmountDTO dto, BindingResult bindingResult,
-    HttpServletRequest request, UriComponentsBuilder ucBuilder) {
+    HttpServletRequest request, UriComponentsBuilder ucBuilder) throws ServiceException {
     this.bankAccountCommandService.creditMoneyToAccount(accountId, dto);
     // Headers
     HttpHeaders headers = new HttpHeaders();
@@ -152,7 +152,7 @@ public class BankAccountCommandController {
   )
   @PutMapping(path = "/{account_id}/debit", produces = {APPLICATION_JSON_VALUE})
   public ResponseEntity<Void> debitMoneyFromAccount(@PathVariable(value = "account_id") UUID accountId, @RequestBody MoneyAmountDTO dto, BindingResult bindingResult,
-    HttpServletRequest request, UriComponentsBuilder ucBuilder) {
+    HttpServletRequest request, UriComponentsBuilder ucBuilder) throws ServiceException {
     this.bankAccountCommandService.debitMoneyFromAccount(accountId, dto);
     // Headers
     HttpHeaders headers = new HttpHeaders();
