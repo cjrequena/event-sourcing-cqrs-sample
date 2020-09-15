@@ -3,6 +3,7 @@ package com.cjrequena.sample.event;
 import com.cjrequena.sample.dto.event.EventDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,13 @@ public class EventSourcingHandler {
   public void publishEvent(Event event) throws Exception {
     MessageChannel messageChannel = event.getMessageChannel();
     EventDTO eventDTO = (EventDTO) event.getSource();
+
+    // Headers
     final Map headers = event.getHeaders();
+    // By using the identity of an aggregate as the partition key, all commands for the same aggregate will end up in the same partition in the commands topic and will
+    // be processed in order, in a single thread. This way no command will be handled before the previous one has produced all downstream events, and Horwitz notes that
+    // this will create a strong consistency guarantee.
+    headers.put(KafkaHeaders.MESSAGE_KEY, eventDTO.getAggregateId().toString().getBytes());
     messageChannel.send(MessageBuilder.withPayload((eventDTO)).copyHeaders(headers).build());
     log.debug("event::sourced {}", eventDTO.toString());
   }

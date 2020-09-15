@@ -97,20 +97,15 @@ spring.cloud.stream.kafka.binder:
   defaultBrokerPort: 9092 # This sets the default port when no port is configured in the broker list
   zkNodes: localhost # A list of ZooKeeper nodes to which the Kafka binder can connect.
   defaultZkPort: 2181 # This sets the default port when no port is configured in the node list
-  #configuration: # Key/Value map of client properties (both producers and consumer) passed to all clients created by the binder. Due to the fact that these properties will be used by both producers and consumers, usage should be restricted to common properties, especially security settings. Default: Empty map.
+  configuration: # Key/Value map of client properties (both producers and consumer) passed to all clients created by the binder. Due to the fact that these properties will be used by both producers and consumers, usage should be restricted to common properties, especially security settings. Default: Empty map.
+    auto.offset.reset: earliest
   #headers: #  The list of custom headers that will be transported by the binder. Default: empty.
-  healthTimeout: 60 # The time to wait to get partition information in seconds; default 60. Health will report as down if this timer expires.
-  offsetUpdateTimeWindow: 10000 # The frequency, in milliseconds, with which offsets are saved. Ignored if 0.
-  offsetUpdateCount: 0 # The frequency, in number of updates, which which consumed offsets are persisted. Ignored if 0. Mutually exclusive with offsetUpdateTimeWindow
+  healthTimeout: 10 # The time to wait to get partition information in seconds; default 60. Health will report as down if this timer expires.
   requiredAcks: 1 # The number of required acks on the broker.
   minPartitionCount: 1 # Effective only if autoCreateTopics or autoAddPartitions is set
   replicationFactor: 1 # The replication factor of auto-created topics if autoCreateTopics is active.
   autoCreateTopics: true # If set to true, the binder will create new topics automatically.
   autoAddPartitions: true # If set to true, the binder will create add new partitions if required
-  socketBufferSize: 1000000000 # Size (in bytes) of the socket buffer to be used by the Kafka consumers
-spring.cloud.sleuth:
-  json:
-    enabled: false
 
 # swagger configuration
 springdoc:
