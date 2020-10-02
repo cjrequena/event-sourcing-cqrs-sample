@@ -37,14 +37,13 @@ import java.util.UUID;
 @Service
 public class BankAccountCommandService {
 
-  private ApplicationEventPublisher eventPublisher;
+  private ApplicationEventPublisher applicationEventPublisher;
   private MessageChannel eventOutputChannel;
   private BankAccountRepository bankAccountRepository;
 
   @Autowired
-  public BankAccountCommandService(ApplicationEventPublisher commandPublisher, BankAccountRepository bankAccountRepository,
-    @Qualifier(StreamChannelConfiguration.EVENT_OUTPUT_CHANNEL) MessageChannel eventOutputChannel) {
-    this.eventPublisher = commandPublisher;
+  public BankAccountCommandService(ApplicationEventPublisher applicationEventPublisher, BankAccountRepository bankAccountRepository, @Qualifier(StreamChannelConfiguration.EVENT_OUTPUT_CHANNEL) MessageChannel eventOutputChannel) {
+    this.applicationEventPublisher = applicationEventPublisher;
     this.eventOutputChannel = eventOutputChannel;
     this.bankAccountRepository = bankAccountRepository;
   }
@@ -66,7 +65,7 @@ public class BankAccountCommandService {
       accountCreatedEventDTO.setPayload(bankAccountDTO);
       Event<AccountCreatedEventDTO> event = new Event(accountCreatedEventDTO, eventOutputChannel);
       event.addHeader("operation", EEvent.ACCOUNT_CREATED_EVENT.getCode());
-      eventPublisher.publishEvent(event);
+      applicationEventPublisher.publishEvent(event);
       return bankAccountDTO;
     } catch (Exception ex) {
       log.error("{}", ex.getMessage());
@@ -86,7 +85,7 @@ public class BankAccountCommandService {
       accountCreditedEventDTO.setPayload(moneyCreditDTO);
       Event<AccountCreditedEventDTO> event = new Event(accountCreditedEventDTO, eventOutputChannel);
       event.addHeader("operation", EEvent.ACCOUNT_CREDITED_EVENT.getCode());
-      eventPublisher.publishEvent(event);
+      applicationEventPublisher.publishEvent(event);
     } catch (Exception ex) {
       log.error("{}", ex.getMessage());
       throw new ServiceException(EErrorCode.INTERNAL_SERVER_ERROR.getErrorCode(), ex);
@@ -105,7 +104,7 @@ public class BankAccountCommandService {
       accountDebitedEventDTO.setPayload(moneyCreditDTO);
       Event<AccountDebitedEventDTO> event = new Event(accountDebitedEventDTO, eventOutputChannel);
       event.addHeader("operation", EEvent.ACCOUNT_DEBITED_EVENT.getCode());
-      eventPublisher.publishEvent(event);
+      applicationEventPublisher.publishEvent(event);
     } catch (Exception ex) {
       log.error("{}", ex.getMessage());
       throw new ServiceException(EErrorCode.INTERNAL_SERVER_ERROR.getErrorCode(), ex);

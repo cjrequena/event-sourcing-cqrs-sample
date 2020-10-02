@@ -1,4 +1,4 @@
-package com.cjrequena.sample.dto.event;
+package com.cjrequena.sample.dto.command;
 
 import com.cjrequena.sample.dto.DTO;
 import com.cjrequena.sample.dto.serializer.LocalDateTimeDeserializer;
@@ -43,7 +43,7 @@ import java.util.UUID;
   "producedByVersion"
 })
 @JsonTypeName("eventDTO")
-public class EventDTO<T> implements DTO, Serializable {
+public class CommandDTO<T> implements DTO, Serializable {
   /**
    * eventId
    */
@@ -51,7 +51,7 @@ public class EventDTO<T> implements DTO, Serializable {
   @NotNull(message = "Event ID is mandatory")
   @Pattern(regexp = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", message = "Format is not valid")
   @Getter(onMethod = @__({@JsonProperty("event_id")}))
-  private UUID eventId;
+  private UUID commandId;
 
   /**
    * aggregateId
@@ -67,9 +67,9 @@ public class EventDTO<T> implements DTO, Serializable {
    */
   @JsonProperty(value = "event_type", required = true)
   @NotNull(message = "Event Type is mandatory")
-  //@Pattern(regexp = "AccountCreatedEvent|AccountCreditedEvent|AccountDebitedEvent", message = "Value not accepted")
+  //@Pattern(regexp = "CreateAccountCommand|CreditAccountCommand|DebitAccountCommand", message = "Value not accepted")
   @Getter(onMethod = @__({@JsonProperty("event_type")}))
-  private String eventType;
+  private String commandType;
 
   /**
    * eventVersion

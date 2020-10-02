@@ -21,12 +21,12 @@ import java.util.Map;
 @Slf4j
 @Component
 @EnableBinding
-public class EventSourcingHandler {
+public class EventEmitter {
 
   private static final String LISTENER_CONDITION = "#event.source.payload instanceof T(com.cjrequena.sample.dto.DTO)";
 
   @TransactionalEventListener(condition = LISTENER_CONDITION, phase = TransactionPhase.BEFORE_COMMIT, fallbackExecution = true)
-  public void publishEvent(Event event) throws Exception {
+  public void emmitEvent(Event event) throws Exception {
     MessageChannel messageChannel = event.getMessageChannel();
     EventDTO eventDTO = (EventDTO) event.getSource();
 

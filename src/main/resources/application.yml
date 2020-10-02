@@ -92,6 +92,15 @@ spring.cloud.stream.bindings:
     content-type: application/json
     binder: kafka # The binder used by this binding. See Multiple Binders on the Classpath for details.
     group: ${random.uuid} # The consumer group of the channel. Applies only to inbound bindings. See Consumer Groups.
+  command_output_channel:
+    destination: command.sourced # The target destination of a channel on the bound middleware (e.g., the RabbitMQ exchange or Kafka topic).
+    content-type: application/json
+    binder: kafka # The binder used by this binding. See Multiple Binders on the Classpath for details.
+  command_input_channel:
+    destination: command.sourced # The target destination of a channel on the bound middleware (e.g., the RabbitMQ exchange or Kafka topic).
+    content-type: application/json
+    binder: kafka # The binder used by this binding. See Multiple Binders on the Classpath for details.
+    group: commad-group # The consumer group of the channel. Applies only to inbound bindings. See Consumer Groups.
 spring.cloud.stream.kafka.binder:
   brokers: localhost # A list of brokers to which the Kafka binder will connect.
   defaultBrokerPort: 9092 # This sets the default port when no port is configured in the broker list
