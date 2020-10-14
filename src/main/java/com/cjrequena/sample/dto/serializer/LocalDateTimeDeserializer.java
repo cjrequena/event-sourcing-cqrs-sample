@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * <p>
@@ -29,7 +30,7 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
   @Override
   public LocalDateTime deserialize(JsonParser parser, DeserializationContext context) throws IOException {
     try {
-      return LocalDateTime.parse(parser.readValueAs(String.class));
+      return LocalDateTime.parse(parser.readValueAs(String.class), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     } catch (Exception ex) {
       log.error("{}", ex.getMessage() + " - Invalid Date Format");
       throw ex;
