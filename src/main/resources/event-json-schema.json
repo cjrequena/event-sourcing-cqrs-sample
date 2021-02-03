@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "id": "",
+  "title": "Transfer Unit Event Schema",
+  "description": "This integration event signals when a transfer unit is sourced",
+  "version": "1",
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "description": "Unique GUID identifying this event",
+          "type": "string",
+          "pattern": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+        },
+        "eventType": {
+          "type": "string",
+          "enum": [
+            "SourcedTransferUnitCreated",
+            "SourcedTransferUnitChanged",
+            "SourcedTransferUnitRetired"
+          ]
+        },
+        "eventTimeStamp": {
+          "description": "Timestamp when this event was generated",
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": true,
+      "required": []
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+      },
+      "additionalProperties": true,
+      "required": []
+    }
+  },
+  "required": [
+    "metadata",
+    "payload"
+  ],
+  "additionalProperties": true,
+  "definitions": {
+  }
+}
