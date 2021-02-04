@@ -1,10 +1,11 @@
 package com.cjrequena.sample.web.controller;
 
 import com.cjrequena.sample.dto.BankAccountDTO;
-import com.cjrequena.sample.exception.EErrorCode;
-import com.cjrequena.sample.exception.ServiceException;
+import com.cjrequena.sample.exception.controller.BadFiltersControllerException;
+import com.cjrequena.sample.exception.controller.NotFoundControllerException;
+import com.cjrequena.sample.exception.service.BankAccountNotFoundServiceException;
+import com.cjrequena.sample.exception.service.RSQLParserServiceException;
 import com.cjrequena.sample.service.BankAccountQueryService;
-import cz.jirutka.rsql.parser.RSQLParserException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -63,15 +64,18 @@ public class BankAccountQueryController {
     }
   )
   @GetMapping(path = "/bank-accounts/{accountId}", produces = {APPLICATION_JSON_VALUE})
-  public BankAccountDTO retrieveById(@PathVariable("accountId") UUID accountId) throws ServiceException {
-    return this.bankAccountQueryService.retrieveById(accountId);
+  public BankAccountDTO retrieveById(@PathVariable("accountId") UUID accountId) throws NotFoundControllerException {
+    try {
+      return this.bankAccountQueryService.retrieveById(accountId);
+    } catch (BankAccountNotFoundServiceException ex) {
+      throw new NotFoundControllerException();
+    }
   }
-
 
   @Operation(
     summary = "Get a list of fooes.",
     description = "Get a list of fooes.",
-    parameters = {@Parameter(name= "accept-version", required = true, in = ParameterIn.HEADER,schema=@Schema(name = "accept-version", type = "string", allowableValues = {
+    parameters = {@Parameter(name = "accept-version", required = true, in = ParameterIn.HEADER, schema = @Schema(name = "accept-version", type = "string", allowableValues = {
       VND_SAMPLE_SERVICE_V1}))}
   )
   @ApiResponses(
@@ -95,27 +99,18 @@ public class BankAccountQueryController {
     @RequestParam(value = "sort", required = false) String sort,
     @RequestParam(value = "offset", required = false) Integer offset,
     @RequestParam(value = "limit", required = false) Integer limit
-  ) throws ServiceException {
+  ) throws BadFiltersControllerException {
     //--
     try {
-
       Page page = this.bankAccountQueryService.retrieve(filters, sort, offset, limit);
-
       HttpHeaders responseHeaders = new HttpHeaders();
       responseHeaders.set(CACHE_CONTROL, "no store, private, max-age=0");
       responseHeaders.set("Total-Count", String.valueOf(page.getTotalElements())); // Total elements in DB.
       responseHeaders.set("Total-Pages", String.valueOf(page.getTotalPages())); // Total pages based on limit/offset
       responseHeaders.set("Number-Of-Elements", String.valueOf(page.getNumberOfElements())); // Total elements in the payload.
       return new ResponseEntity<>(page.getContent(), responseHeaders, HttpStatus.OK);
-    } catch (RSQLParserException ex) {
-      //log.error("{}", ex.getMessage(), ex);
-      throw new ServiceException(EErrorCode.BAD_REQUEST_ERROR.getErrorCode(), ex);
-    } catch (ServiceException ex) {
-      //log.error("{}", ex.getMessage(), ex);
-      throw ex;
-    } catch (Exception ex) {
-      //log.error("{}", ex.getMessage(), ex);
-      throw new ServiceException(EErrorCode.INTERNAL_SERVER_ERROR.getErrorCode(), ex);
+    } catch (RSQLParserServiceException ex) {
+      throw new BadFiltersControllerException(ex.getMessage());
     }
     //--
   }
