@@ -8,7 +8,7 @@ import com.cjrequena.sample.domain.event.AccountCreditedEvent;
 import com.cjrequena.sample.domain.event.AccountDebitedEvent;
 import com.cjrequena.sample.dto.BankAccountDTO;
 import com.cjrequena.sample.dto.MoneyAmountDTO;
-import com.cjrequena.sample.event.EEvent;
+import com.cjrequena.sample.event.EEventType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -27,52 +27,52 @@ public class BankAccountProjection {
     this.bankAccountRepository = bankAccountRepository;
   }
 
-  @StreamListener(value = StreamChannelConfiguration.EVENT_INPUT_CHANNEL, condition = "headers['operation']=='AccountCreatedEvent'")
+  @StreamListener(value = StreamChannelConfiguration.EVENT_INPUT_CHANNEL, condition = "headers['operation']=='com.cjrequena.samample.accountcreatedevent.v1'")
   public synchronized void listener(AccountCreatedEvent event) throws InterruptedException {
     log.debug("event::sourced::received -> {}", event);
-    if (event.getMetadata().getEventType().equals(EEvent.ACCOUNT_CREATED_EVENT.getCode())) {
-      BankAccountDTO bankAccountDTO = event.getPayload();
+    if (event.getType().equals(EEventType.ACCOUNT_CREATED_EVENT)) {
+      BankAccountDTO bankAccountDTO = event.getData();
       BankAccountEntity entity = new BankAccountEntity();
       entity.setAccountId(bankAccountDTO.getAccountId());
       entity.setOwner(bankAccountDTO.getOwner());
       entity.setBalance(bankAccountDTO.getBalance());
-      final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(event.getMetadata().getAggregateId());
+      final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(event.getAggregateId());
       if (bankAccountEntityOptional.isEmpty()) {
         this.bankAccountRepository.save(entity);
       } else {
-        log.error("Bank account {} already exists", event.getMetadata().getAggregateId());
+        log.error("Bank account {} already exists", event.getAggregateId());
       }
     }
   }
 
-  @StreamListener(value = StreamChannelConfiguration.EVENT_INPUT_CHANNEL, condition = "headers['operation']=='AccountCreditedEvent'")
+  @StreamListener(value = StreamChannelConfiguration.EVENT_INPUT_CHANNEL, condition = "headers['operation']=='com.cjrequena.samample.accountcreditedevent.v1'")
   public synchronized void listener2(AccountCreditedEvent event) {
     log.debug("event::sourced::received -> {}", event);
-    if (event.getMetadata().getEventType().equals(EEvent.ACCOUNT_CREDITED_EVENT.getCode())) {
-      MoneyAmountDTO moneyAmountDTO = event.getPayload();
-      final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(event.getMetadata().getAggregateId());
+    if (event.getType().equals(EEventType.ACCOUNT_CREDITED_EVENT)) {
+      MoneyAmountDTO moneyAmountDTO = event.getData();
+      final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(event.getAggregateId());
       if (bankAccountEntityOptional.isPresent()) {
         BankAccountEntity entity = bankAccountEntityOptional.get();
         entity.setBalance(entity.getBalance().add(moneyAmountDTO.getAmount()));
         this.bankAccountRepository.save(entity);
       } else {
-        log.error("Bank account {} does not exist", event.getMetadata().getAggregateId());
+        log.error("Bank account {} does not exist", event.getAggregateId());
       }
     }
   }
 
-  @StreamListener(value = StreamChannelConfiguration.EVENT_INPUT_CHANNEL, condition = "headers['operation']=='AccountDebitedEvent'")
+  @StreamListener(value = StreamChannelConfiguration.EVENT_INPUT_CHANNEL, condition = "headers['operation']=='com.cjrequena.samample.accountdebitedevent.v1'")
   public synchronized void listener3(AccountDebitedEvent event) throws InterruptedException {
     log.debug("event::sourced::received -> {}", event);
-    if (event.getMetadata().getEventType().equals(EEvent.ACCOUNT_DEBITED_EVENT.getCode())) {
-      MoneyAmountDTO moneyAmountDTO = event.getPayload();
-      final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(event.getMetadata().getAggregateId());
+    if (event.getType().equals(EEventType.ACCOUNT_DEBITED_EVENT)) {
+      MoneyAmountDTO moneyAmountDTO = event.getData();
+      final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(event.getAggregateId());
       if (bankAccountEntityOptional.isPresent()) {
         BankAccountEntity entity = bankAccountEntityOptional.get();
         entity.setBalance(entity.getBalance().subtract(moneyAmountDTO.getAmount()));
         this.bankAccountRepository.save(entity);
       } else {
-        log.error("Bank account {} does not exist", event.getMetadata().getAggregateId());
+        log.error("Bank account {} does not exist", event.getAggregateId());
       }
     }
   }

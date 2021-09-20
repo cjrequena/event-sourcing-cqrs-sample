@@ -35,7 +35,7 @@ public class EventEmitter {
     // By using the identity of an aggregate as the partition key, all commands for the same aggregate will end up in the same partition in the commands topic and will
     // be processed in order, in a single thread. This way no command will be handled before the previous one has produced all downstream events, and Horwitz notes that
     // this will create a strong consistency guarantee.
-    headers.put(KafkaHeaders.MESSAGE_KEY, event.getMetadata().getAggregateId().toString().getBytes());
+    headers.put(KafkaHeaders.MESSAGE_KEY, event.getAggregateId().toString().getBytes());
     messageChannel.send(MessageBuilder.withPayload((event)).copyHeaders(headers).build());
     log.debug("event::sourced {}", event.toString());
   }

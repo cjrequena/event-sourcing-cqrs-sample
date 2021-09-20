@@ -152,7 +152,6 @@ public class BankAccountCommandController {
     HttpHeaders headers = new HttpHeaders();
     headers.set(CACHE_CONTROL, "no store, private, max-age=0");
     headers.setLocation(ucBuilder.path(new StringBuilder().append(request.getServletPath()).append("/{account_id}").toString()).buildAndExpand(accountId).toUri());
-    //
     return new ResponseEntity<>(headers, HttpStatus.ACCEPTED);
   }
 }
