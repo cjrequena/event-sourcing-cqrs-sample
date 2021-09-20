@@ -1,6 +1,5 @@
-package com.cjrequena.sample.dto.event;
+package com.cjrequena.sample.domain.event;
 
-import com.cjrequena.sample.dto.DTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -30,8 +29,8 @@ import java.io.Serializable;
   "metadata",
   "payload"
 })
-@JsonTypeName("eventDTO")
-public class EventDTO<T> implements DTO, Serializable {
+@JsonTypeName("event")
+public class Event<T> implements Serializable {
 
   /**
    *
@@ -39,7 +38,7 @@ public class EventDTO<T> implements DTO, Serializable {
   @JsonProperty(value = "metadata", required = true)
   @NotNull(message = "Metadata is mandatory")
   @Getter(onMethod = @__({@JsonProperty(value = "metadata", required = true)}))
-  private EventMetaDataDTO metadata;
+  private EventMetaData metadata;
 
   /**
    *

@@ -13,12 +13,12 @@ import java.util.Map;
  * <p></p>
  * @author cjrequena
  */
-public class Event<T> extends ApplicationEvent {
+public class KafkaEvent<T> extends ApplicationEvent {
 
   private final Map<String, Object> headers;
   private MessageChannel messageChannel;
 
-  public Event(T source, MessageChannel messageChannel) {
+  public KafkaEvent(T source, MessageChannel messageChannel) {
     super(source != null ? source : KafkaNull.INSTANCE);
     this.headers = new HashMap<>();
     this.messageChannel = messageChannel;

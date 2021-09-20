@@ -31,7 +31,7 @@ import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 })
 @JsonTypeName("payload")
 @Schema
-public class BankAccountDTO implements DTO, Serializable {
+public class BankAccountDTO implements Serializable {
 
   @JsonProperty(value = "account_id")
   @Schema(accessMode = READ_ONLY)

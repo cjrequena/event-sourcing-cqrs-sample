@@ -1,6 +1,5 @@
-package com.cjrequena.sample.dto.event;
+package com.cjrequena.sample.domain.event;
 
-import com.cjrequena.sample.dto.DTO;
 import com.cjrequena.sample.dto.serializer.LocalDateTimeDeserializer;
 import com.cjrequena.sample.dto.serializer.LocalDateTimeSerializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -42,13 +41,13 @@ import java.util.UUID;
   "spamId"
 
 })
-@JsonTypeName("eventDTO")
-public class EventMetaDataDTO implements DTO, Serializable {
+@JsonTypeName("eventMetaData")
+public class EventMetaData  implements Serializable {
   /**
    * eventId
    */
   @JsonProperty(value = "event_id", required = true)
-  @NotNull(message = "Event ID is mandatory")
+  @NotNull(message = "KafkaEvent ID is mandatory")
   @Pattern(regexp = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", message = "Format is not valid")
   @Getter(onMethod = @__({@JsonProperty("event_id")}))
   private UUID eventId;
@@ -57,7 +56,7 @@ public class EventMetaDataDTO implements DTO, Serializable {
    * eventType
    */
   @JsonProperty(value = "event_type", required = true)
-  @NotNull(message = "Event Type is mandatory")
+  @NotNull(message = "KafkaEvent Type is mandatory")
   //@Pattern(regexp = "AccountCreatedEvent|AccountCreditedEvent|AccountDebitedEvent", message = "Value not accepted")
   @Getter(onMethod = @__({@JsonProperty("event_type")}))
   private String eventType;
@@ -66,7 +65,7 @@ public class EventMetaDataDTO implements DTO, Serializable {
    * eventTimeStamp
    */
   @JsonProperty(value = "event_time_stamp", required = true)
-  @NotNull(message = "Event Timestamp is mandatory")
+  @NotNull(message = "KafkaEvent Timestamp is mandatory")
   @Pattern(regexp = "[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))T(([0-1][0-9])|(2[0-3])):([0-5][0-9]):([0-5][0-9])Z", message = "Format date time is not valid")
   @Getter(onMethod = @__({@JsonProperty(value = "event_time_stamp", required = true)}))
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)

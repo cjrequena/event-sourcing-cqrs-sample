@@ -1,6 +1,5 @@
 package com.cjrequena.sample.exception;
 
-import com.cjrequena.sample.dto.DTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -10,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 })
 @JsonTypeName("error")
 @XmlRootElement
-public class ErrorDTO implements DTO {
+public class ErrorDTO implements Serializable {
 
   @JsonProperty(value = "date")
   @Getter(onMethod = @__({@JsonProperty("date")}))

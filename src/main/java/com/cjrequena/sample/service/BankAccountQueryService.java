@@ -1,10 +1,10 @@
 package com.cjrequena.sample.service;
 
 import com.cjrequena.sample.db.OffsetLimitRequestBuilder;
-import com.cjrequena.sample.db.entity.BankAccountEntity;
 import com.cjrequena.sample.db.repository.BankAccountRepository;
 import com.cjrequena.sample.db.rsql.CustomRsqlVisitor;
 import com.cjrequena.sample.db.rsql.RsqlSearchOperation;
+import com.cjrequena.sample.domain.BankAccountEntity;
 import com.cjrequena.sample.dto.BankAccountDTO;
 import com.cjrequena.sample.exception.service.BankAccountNotFoundServiceException;
 import com.cjrequena.sample.exception.service.RSQLParserServiceException;

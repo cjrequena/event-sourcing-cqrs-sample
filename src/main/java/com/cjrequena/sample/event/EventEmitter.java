@@ -1,6 +1,6 @@
 package com.cjrequena.sample.event;
 
-import com.cjrequena.sample.dto.event.EventDTO;
+import com.cjrequena.sample.domain.event.Event;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -23,21 +23,21 @@ import java.util.Map;
 @EnableBinding
 public class EventEmitter {
 
-  private static final String LISTENER_CONDITION = "#event.source.payload instanceof T(com.cjrequena.sample.dto.DTO)";
+  private static final String LISTENER_CONDITION = "#kafkaEvent.source instanceof T(com.cjrequena.sample.domain.event.Event)";
 
   @TransactionalEventListener(condition = LISTENER_CONDITION, phase = TransactionPhase.BEFORE_COMMIT, fallbackExecution = true)
-  public void emmitEvent(Event event) throws Exception {
-    MessageChannel messageChannel = event.getMessageChannel();
-    EventDTO eventDTO = (EventDTO) event.getSource();
+  public void emmitEvent(KafkaEvent kafkaEvent) throws Exception {
+    MessageChannel messageChannel = kafkaEvent.getMessageChannel();
+    Event event = (Event) kafkaEvent.getSource();
 
     // Headers
-    final Map headers = event.getHeaders();
+    final Map headers = kafkaEvent.getHeaders();
     // By using the identity of an aggregate as the partition key, all commands for the same aggregate will end up in the same partition in the commands topic and will
     // be processed in order, in a single thread. This way no command will be handled before the previous one has produced all downstream events, and Horwitz notes that
     // this will create a strong consistency guarantee.
-    headers.put(KafkaHeaders.MESSAGE_KEY, eventDTO.getMetadata().getAggregateId().toString().getBytes());
-    messageChannel.send(MessageBuilder.withPayload((eventDTO)).copyHeaders(headers).build());
-    log.debug("event::sourced {}", eventDTO.toString());
+    headers.put(KafkaHeaders.MESSAGE_KEY, event.getMetadata().getAggregateId().toString().getBytes());
+    messageChannel.send(MessageBuilder.withPayload((event)).copyHeaders(headers).build());
+    log.debug("event::sourced {}", event.toString());
   }
 
 }

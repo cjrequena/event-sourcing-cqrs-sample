@@ -18,7 +18,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -62,8 +67,7 @@ public class BankAccountCommandController {
   )
   @ApiResponses(
     value = {
-      @ApiResponse(responseCode = "201", description = "Created - The request was successful, we created a new resource and the response body contains the representation."),
-      @ApiResponse(responseCode = "204", description = "No Content - The request was successful, we created a new resource and the response body does not contains the representation."),
+      @ApiResponse(responseCode = "202", description = "Accepted - The request has been accepted for processing, but the processing has not been completed. The request might or might not eventually be acted upon, as it might be disallowed when processing actually takes place.."),
       @ApiResponse(responseCode = "400", description = "Bad Request - The data given in the POST failed validation. Inspect the response body for details."),
       @ApiResponse(responseCode = "401", description = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
       @ApiResponse(responseCode = "408", description = "Request Timeout"),
@@ -78,16 +82,12 @@ public class BankAccountCommandController {
     produces = {APPLICATION_JSON_VALUE}
   )
   public ResponseEntity<Void> create(@Parameter @Valid @RequestBody BankAccountDTO dto, BindingResult bindingResult, HttpServletRequest request, UriComponentsBuilder ucBuilder)  {
-    //--
-    //
     dto = bankAccountCommandService.createAccount(dto);
     // Headers
     HttpHeaders headers = new HttpHeaders();
     headers.set(CACHE_CONTROL, "no store, private, max-age=0");
-    headers.setLocation(ucBuilder.path(new StringBuilder().append(request.getServletPath()).append("/{account_id}").toString()).buildAndExpand(dto.getAccountId()).toUri());
-    //
-    return new ResponseEntity<>(headers, HttpStatus.CREATED);
-    //---
+    headers.set("account-id",dto.getAccountId().toString());
+    return new ResponseEntity<>(headers, HttpStatus.ACCEPTED);
   }
 
   @Operation(
@@ -101,7 +101,7 @@ public class BankAccountCommandController {
   )
   @ApiResponses(
     value = {
-      @ApiResponse(responseCode = "204", description = "No Content - The request was successful, we created a new resource and the response body does not contains the representation."),
+      @ApiResponse(responseCode = "202", description = "Accepted - The request has been accepted for processing, but the processing has not been completed. The request might or might not eventually be acted upon, as it might be disallowed when processing actually takes place.."),
       @ApiResponse(responseCode = "400", description = "Bad Request - The data given in the POST failed validation. Inspect the response body for details."),
       @ApiResponse(responseCode = "401", description = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
       @ApiResponse(responseCode = "408", description = "Request Timeout"),
@@ -120,7 +120,7 @@ public class BankAccountCommandController {
     headers.set(CACHE_CONTROL, "no store, private, max-age=0");
     headers.setLocation(ucBuilder.path(new StringBuilder().append(request.getServletPath()).append("/{account_id}").toString()).buildAndExpand(accountId).toUri());
     //
-    return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
+    return new ResponseEntity<>(headers, HttpStatus.ACCEPTED);
   }
 
   @Operation(
@@ -134,7 +134,7 @@ public class BankAccountCommandController {
   )
   @ApiResponses(
     value = {
-      @ApiResponse(responseCode = "204", description = "No Content - The request was successful, we created a new resource and the response body does not contains the representation."),
+      @ApiResponse(responseCode = "202", description = "Accepted - The request has been accepted for processing, but the processing has not been completed. The request might or might not eventually be acted upon, as it might be disallowed when processing actually takes place.."),
       @ApiResponse(responseCode = "400", description = "Bad Request - The data given in the POST failed validation. Inspect the response body for details."),
       @ApiResponse(responseCode = "401", description = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
       @ApiResponse(responseCode = "408", description = "Request Timeout"),
@@ -153,6 +153,6 @@ public class BankAccountCommandController {
     headers.set(CACHE_CONTROL, "no store, private, max-age=0");
     headers.setLocation(ucBuilder.path(new StringBuilder().append(request.getServletPath()).append("/{account_id}").toString()).buildAndExpand(accountId).toUri());
     //
-    return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
+    return new ResponseEntity<>(headers, HttpStatus.ACCEPTED);
   }
 }
