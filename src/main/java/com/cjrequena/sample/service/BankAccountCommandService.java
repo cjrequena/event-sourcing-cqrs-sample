@@ -7,7 +7,8 @@ import com.cjrequena.sample.domain.event.AccountCreatedEvent;
 import com.cjrequena.sample.domain.event.AccountCreditedEvent;
 import com.cjrequena.sample.domain.event.AccountDebitedEvent;
 import com.cjrequena.sample.dto.BankAccountDTO;
-import com.cjrequena.sample.dto.MoneyAmountDTO;
+import com.cjrequena.sample.dto.CreditBankAccountDTO;
+import com.cjrequena.sample.dto.DebitBankAccountDTO;
 import com.cjrequena.sample.event.EEventType;
 import com.cjrequena.sample.event.KafkaEvent;
 import lombok.extern.slf4j.Slf4j;
@@ -65,22 +66,22 @@ public class BankAccountCommandService {
   }
 
   @Transactional
-  public void creditMoneyToAccount(UUID accountId, MoneyAmountDTO moneyCreditDTO) {
+  public void creditMoneyToAccount(UUID accountId, CreditBankAccountDTO dto) {
     AccountCreditedEvent creditedEvent = new AccountCreditedEvent();
     creditedEvent.setType(EEventType.ACCOUNT_CREDITED_EVENT);
     creditedEvent.setAggregateId(accountId);
-    creditedEvent.setData(moneyCreditDTO);
+    creditedEvent.setData(dto);
     KafkaEvent<AccountCreditedEvent> kafkaEvent = new KafkaEvent(creditedEvent, eventOutputChannel);
     kafkaEvent.addHeader("operation", EEventType.ACCOUNT_CREDITED_EVENT.getValue());
     applicationEventPublisher.publishEvent(kafkaEvent);
   }
 
   @Transactional
-  public void debitMoneyFromAccount(UUID accountId, MoneyAmountDTO moneyCreditDTO) {
+  public void debitMoneyFromAccount(UUID accountId, DebitBankAccountDTO dto) {
     AccountDebitedEvent accountDebitedEvent = new AccountDebitedEvent();
     accountDebitedEvent.setType(EEventType.ACCOUNT_DEBITED_EVENT);
     accountDebitedEvent.setAggregateId(accountId);
-    accountDebitedEvent.setData(moneyCreditDTO);
+    accountDebitedEvent.setData(dto);
     KafkaEvent<AccountDebitedEvent> kafkaEvent = new KafkaEvent(accountDebitedEvent, eventOutputChannel);
     kafkaEvent.addHeader("operation", EEventType.ACCOUNT_DEBITED_EVENT.getValue());
     applicationEventPublisher.publishEvent(kafkaEvent);

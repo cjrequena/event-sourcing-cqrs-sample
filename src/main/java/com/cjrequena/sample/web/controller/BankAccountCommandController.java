@@ -1,7 +1,8 @@
 package com.cjrequena.sample.web.controller;
 
 import com.cjrequena.sample.dto.BankAccountDTO;
-import com.cjrequena.sample.dto.MoneyAmountDTO;
+import com.cjrequena.sample.dto.CreditBankAccountDTO;
+import com.cjrequena.sample.dto.DebitBankAccountDTO;
 import com.cjrequena.sample.service.BankAccountCommandService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,9 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +27,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.UUID;
 
 import static com.cjrequena.sample.common.Constant.VND_SAMPLE_SERVICE_V1;
 import static org.apache.http.HttpHeaders.CACHE_CONTROL;
@@ -97,7 +95,7 @@ public class BankAccountCommandController {
       @Parameter(name = "accept-version", required = true, in = ParameterIn.HEADER, schema = @Schema(name = "accept-version", type = "string", allowableValues = {
         VND_SAMPLE_SERVICE_V1})),
     },
-    requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = MoneyAmountDTO.class)))
+    requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CreditBankAccountDTO.class)))
   )
   @ApiResponses(
     value = {
@@ -111,15 +109,13 @@ public class BankAccountCommandController {
       @ApiResponse(responseCode = "503", description = "Service Unavailable - We are temporarily unable. Please wait for a bit and try again. ")
     }
   )
-  @PutMapping(path = "/{account_id}/credit", produces = {APPLICATION_JSON_VALUE})
-  public ResponseEntity<Void> creditMoneyToAccount(@PathVariable(value = "account_id") UUID accountId, @RequestBody MoneyAmountDTO dto, BindingResult bindingResult,
+  @PostMapping(path = "/bank-accounts/credit", produces = {APPLICATION_JSON_VALUE})
+  public ResponseEntity<Void> creditMoneyToAccount(@RequestBody CreditBankAccountDTO dto, BindingResult bindingResult,
     HttpServletRequest request, UriComponentsBuilder ucBuilder){
-    this.bankAccountCommandService.creditMoneyToAccount(accountId, dto);
+    this.bankAccountCommandService.creditMoneyToAccount(dto.getAccountId(), dto);
     // Headers
     HttpHeaders headers = new HttpHeaders();
     headers.set(CACHE_CONTROL, "no store, private, max-age=0");
-    headers.setLocation(ucBuilder.path(new StringBuilder().append(request.getServletPath()).append("/{account_id}").toString()).buildAndExpand(accountId).toUri());
-    //
     return new ResponseEntity<>(headers, HttpStatus.ACCEPTED);
   }
 
@@ -127,10 +123,9 @@ public class BankAccountCommandController {
     summary = "Command for bank account debit operation ",
     description = "Command for bank account debit operation ",
     parameters = {
-      @Parameter(name = "accept-version", required = true, in = ParameterIn.HEADER, schema = @Schema(name = "accept-version", type = "string", allowableValues = {
-        VND_SAMPLE_SERVICE_V1})),
+      @Parameter(name = "accept-version", required = true, in = ParameterIn.HEADER, schema = @Schema(name = "accept-version", type = "string", allowableValues = {VND_SAMPLE_SERVICE_V1})),
     },
-    requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = MoneyAmountDTO.class)))
+    requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = DebitBankAccountDTO.class)))
   )
   @ApiResponses(
     value = {
@@ -144,14 +139,13 @@ public class BankAccountCommandController {
       @ApiResponse(responseCode = "503", description = "Service Unavailable - We are temporarily unable. Please wait for a bit and try again. ")
     }
   )
-  @PutMapping(path = "/{account_id}/debit", produces = {APPLICATION_JSON_VALUE})
-  public ResponseEntity<Void> debitMoneyFromAccount(@PathVariable(value = "account_id") UUID accountId, @RequestBody MoneyAmountDTO dto, BindingResult bindingResult,
+  @PostMapping(path = "bank-accounts/debit", produces = {APPLICATION_JSON_VALUE})
+  public ResponseEntity<Void> debitMoneyFromAccount(@RequestBody DebitBankAccountDTO dto, BindingResult bindingResult,
     HttpServletRequest request, UriComponentsBuilder ucBuilder) {
-    this.bankAccountCommandService.debitMoneyFromAccount(accountId, dto);
+    this.bankAccountCommandService.debitMoneyFromAccount(dto.getAccountId(), dto);
     // Headers
     HttpHeaders headers = new HttpHeaders();
     headers.set(CACHE_CONTROL, "no store, private, max-age=0");
-    headers.setLocation(ucBuilder.path(new StringBuilder().append(request.getServletPath()).append("/{account_id}").toString()).buildAndExpand(accountId).toUri());
     return new ResponseEntity<>(headers, HttpStatus.ACCEPTED);
   }
 }

@@ -44,4 +44,8 @@ public class BankAccountDTO implements Serializable {
   @NotNull(message = "balance is a required field")
   @JsonProperty(value = "balance", required = true)
   private BigDecimal balance;
+
+  @JsonProperty(value = "version")
+  @Schema(accessMode = READ_ONLY)
+  private int version;
 }

@@ -7,7 +7,8 @@ import com.cjrequena.sample.domain.event.AccountCreatedEvent;
 import com.cjrequena.sample.domain.event.AccountCreditedEvent;
 import com.cjrequena.sample.domain.event.AccountDebitedEvent;
 import com.cjrequena.sample.dto.BankAccountDTO;
-import com.cjrequena.sample.dto.MoneyAmountDTO;
+import com.cjrequena.sample.dto.CreditBankAccountDTO;
+import com.cjrequena.sample.dto.DebitBankAccountDTO;
 import com.cjrequena.sample.event.EEventType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,11 @@ public class BankAccountProjection {
   public synchronized void listener(AccountCreatedEvent event) throws InterruptedException {
     log.debug("event::sourced::received -> {}", event);
     if (event.getType().equals(EEventType.ACCOUNT_CREATED_EVENT)) {
-      BankAccountDTO bankAccountDTO = event.getData();
+      BankAccountDTO dto = event.getData();
       BankAccountEntity entity = new BankAccountEntity();
-      entity.setAccountId(bankAccountDTO.getAccountId());
-      entity.setOwner(bankAccountDTO.getOwner());
-      entity.setBalance(bankAccountDTO.getBalance());
+      entity.setAccountId(dto.getAccountId());
+      entity.setOwner(dto.getOwner());
+      entity.setBalance(dto.getBalance());
       final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(event.getAggregateId());
       if (bankAccountEntityOptional.isEmpty()) {
         this.bankAccountRepository.save(entity);
@@ -49,11 +50,11 @@ public class BankAccountProjection {
   public synchronized void listener2(AccountCreditedEvent event) {
     log.debug("event::sourced::received -> {}", event);
     if (event.getType().equals(EEventType.ACCOUNT_CREDITED_EVENT)) {
-      MoneyAmountDTO moneyAmountDTO = event.getData();
+      CreditBankAccountDTO dto = event.getData();
       final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(event.getAggregateId());
       if (bankAccountEntityOptional.isPresent()) {
         BankAccountEntity entity = bankAccountEntityOptional.get();
-        entity.setBalance(entity.getBalance().add(moneyAmountDTO.getAmount()));
+        entity.setBalance(entity.getBalance().add(dto.getAmount()));
         this.bankAccountRepository.save(entity);
       } else {
         log.error("Bank account {} does not exist", event.getAggregateId());
@@ -65,11 +66,11 @@ public class BankAccountProjection {
   public synchronized void listener3(AccountDebitedEvent event) throws InterruptedException {
     log.debug("event::sourced::received -> {}", event);
     if (event.getType().equals(EEventType.ACCOUNT_DEBITED_EVENT)) {
-      MoneyAmountDTO moneyAmountDTO = event.getData();
+      DebitBankAccountDTO dto = event.getData();
       final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(event.getAggregateId());
       if (bankAccountEntityOptional.isPresent()) {
         BankAccountEntity entity = bankAccountEntityOptional.get();
-        entity.setBalance(entity.getBalance().subtract(moneyAmountDTO.getAmount()));
+        entity.setBalance(entity.getBalance().subtract(dto.getAmount()));
         this.bankAccountRepository.save(entity);
       } else {
         log.error("Bank account {} does not exist", event.getAggregateId());

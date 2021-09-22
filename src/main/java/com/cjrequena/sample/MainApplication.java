@@ -1,7 +1,6 @@
 package com.cjrequena.sample;
 
 import com.cjrequena.sample.dto.BankAccountDTO;
-import com.cjrequena.sample.dto.MoneyAmountDTO;
 import com.cjrequena.sample.service.BankAccountCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -28,7 +27,6 @@ public class MainApplication implements CommandLineRunner {
 
   @Override public void run(String... args) throws Exception {
     BankAccountDTO bankAccountDTO = new BankAccountDTO();
-    MoneyAmountDTO moneyAmountDTO = new MoneyAmountDTO();
 
 //    bankAccountDTO.setOwner("John Lennon");
 //    bankAccountDTO.setBalance(BigDecimal.valueOf(100));
