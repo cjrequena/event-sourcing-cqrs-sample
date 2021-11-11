@@ -53,20 +53,14 @@ logging.level: # Log levels severity mapping. For instance, `logging.level.org.s
   org.hibernate.type.descriptor.sql.BasicBinder: ERROR
   org.flywaydb: INFO
 
-# DATABASE
-#spring.datasource.postgres.type: com.zaxxer.hikari.HikariDataSource
-#spring.datasource.postgres.jdbcUrl: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/foo
-#spring.datasource.postgres.driver-class-name: org.postgresql.Driver
-#spring.datasource.postgres.username: postgres
-#spring.datasource.postgres.password: postgres
-## https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
-#spring.datasource.postgres.pool-name: HikariPool
-#spring.datasource.postgres.connection-timeout: 20000
-#spring.datasource.postgres.minimum-idle: 5
-#spring.datasource.postgres.maximum-pool-size: 12
-#spring.datasource.postgres.idle-timeout: 300000
-#spring.datasource.postgres.max-lifetime: 1200000
-#spring.datasource.postgres.auto-commit: false
+# H2
+spring.datasource.url: jdbc:h2:mem:testdb
+spring.datasource.driverClassName: org.h2.Driver
+spring.datasource.username: sa
+#spring.datasource.password: password
+spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled: true
+
 # JPA specific configs
 spring.jpa.open-in-view: false
 #spring.jpa.properties.hibernate.connection.provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
@@ -82,7 +76,8 @@ spring.jpa.properties.hibernate.bytecode.use_reflection_optimizer: false
 # flyway
 spring.flyway:
   enabled: true
-  locations: classpath:/db/migration
+  #locations: classpath:/db/migration
+  locations: classpath:/db/migration/h2
 
 spring.cloud.stream:
   defaultBinder: kafka # The default binder to use, if multiple binders are configured. See Multiple Binders on the Classpath.
