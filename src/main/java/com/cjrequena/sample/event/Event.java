@@ -77,7 +77,7 @@ public abstract class Event<T> {
   // Identifies the schema that data adheres to.
   protected ESchemaType dataSchema;
 
-  // Unique id for the specific message. This id is globally unique
+  // Unique aggregateId for the specific message. This id is globally unique
   @NotBlank
   protected UUID aggregateId;
 
