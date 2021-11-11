@@ -1,6 +1,5 @@
 package com.cjrequena.sample.event;
 
-import com.cjrequena.sample.domain.event.Event;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -23,7 +22,7 @@ import java.util.Map;
 @EnableBinding
 public class EventEmitter {
 
-  private static final String LISTENER_CONDITION = "#kafkaEvent.source instanceof T(com.cjrequena.sample.domain.event.Event)";
+  private static final String LISTENER_CONDITION = "#kafkaEvent.source instanceof T(com.cjrequena.sample.event.Event)";
 
   @TransactionalEventListener(condition = LISTENER_CONDITION, phase = TransactionPhase.BEFORE_COMMIT, fallbackExecution = true)
   public void emmitEvent(KafkaEvent kafkaEvent) throws Exception {

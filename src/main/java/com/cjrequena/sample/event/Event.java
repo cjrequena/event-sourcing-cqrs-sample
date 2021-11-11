@@ -1,7 +1,5 @@
-package com.cjrequena.sample.domain.event;
+package com.cjrequena.sample.event;
 
-import com.cjrequena.sample.event.EEventType;
-import com.cjrequena.sample.event.ESchemaType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -20,6 +18,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ *
+ * <p></p>
+ * <p></p>
+ * @author cjrequena
+ */
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor

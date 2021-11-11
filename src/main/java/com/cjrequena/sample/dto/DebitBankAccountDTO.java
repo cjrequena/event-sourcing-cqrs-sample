@@ -9,8 +9,6 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
-
 @JsonPropertyOrder(value = {
   "accountId",
   "version",

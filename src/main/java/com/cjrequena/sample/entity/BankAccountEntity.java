@@ -1,4 +1,4 @@
-package com.cjrequena.sample.domain;
+package com.cjrequena.sample.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

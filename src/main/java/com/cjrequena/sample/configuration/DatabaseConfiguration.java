@@ -49,7 +49,7 @@ public class DatabaseConfiguration {
   public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("dataSource") DataSource dataSource) {
     return builder
       .dataSource(dataSource)
-      .packages("com.cjrequena.sample.domain")
+      .packages("com.cjrequena.sample.entity")
       .persistenceUnit("cqrs")
       .build();
   }

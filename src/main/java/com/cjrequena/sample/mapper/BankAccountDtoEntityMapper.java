@@ -1,7 +1,7 @@
 package com.cjrequena.sample.mapper;
 
-import com.cjrequena.sample.domain.BankAccountEntity;
 import com.cjrequena.sample.dto.BankAccountDTO;
+import com.cjrequena.sample.entity.BankAccountEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 

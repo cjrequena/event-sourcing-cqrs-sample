@@ -1,6 +1,6 @@
-package com.cjrequena.sample.domain.event;
+package com.cjrequena.sample.event;
 
-import com.cjrequena.sample.dto.DebitBankAccountDTO;
+import com.cjrequena.sample.dto.CreditBankAccountDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -10,6 +10,6 @@ import java.io.Serializable;
 @Data
 @ToString(callSuper = true, includeFieldNames = true)
 @EqualsAndHashCode(callSuper = false)
-public class AccountDebitedEvent extends Event<DebitBankAccountDTO> implements Serializable {
+public class AccountCreditedEvent extends Event<CreditBankAccountDTO> implements Serializable {
 
 }

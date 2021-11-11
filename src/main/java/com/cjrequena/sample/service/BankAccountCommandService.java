@@ -2,13 +2,13 @@ package com.cjrequena.sample.service;
 
 import com.cjrequena.sample.configuration.StreamChannelConfiguration;
 import com.cjrequena.sample.db.repository.BankAccountRepository;
-import com.cjrequena.sample.domain.BankAccountEntity;
-import com.cjrequena.sample.domain.event.AccountCreatedEvent;
-import com.cjrequena.sample.domain.event.AccountCreditedEvent;
-import com.cjrequena.sample.domain.event.AccountDebitedEvent;
 import com.cjrequena.sample.dto.BankAccountDTO;
 import com.cjrequena.sample.dto.CreditBankAccountDTO;
 import com.cjrequena.sample.dto.DebitBankAccountDTO;
+import com.cjrequena.sample.entity.BankAccountEntity;
+import com.cjrequena.sample.event.AccountCreatedEvent;
+import com.cjrequena.sample.event.AccountCreditedEvent;
+import com.cjrequena.sample.event.AccountDebitedEvent;
 import com.cjrequena.sample.event.EEventType;
 import com.cjrequena.sample.event.KafkaEvent;
 import lombok.extern.slf4j.Slf4j;
