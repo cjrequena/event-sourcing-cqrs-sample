@@ -24,7 +24,7 @@ public class EventEmitter {
 
   private static final String LISTENER_CONDITION = "#kafkaEvent.source instanceof T(com.cjrequena.sample.event.Event)";
 
-  @TransactionalEventListener(condition = LISTENER_CONDITION, phase = TransactionPhase.BEFORE_COMMIT, fallbackExecution = true)
+  @TransactionalEventListener(condition = LISTENER_CONDITION, phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
   public void emmitEvent(KafkaEvent kafkaEvent) throws Exception {
     MessageChannel messageChannel = kafkaEvent.getMessageChannel();
     Event event = (Event) kafkaEvent.getSource();

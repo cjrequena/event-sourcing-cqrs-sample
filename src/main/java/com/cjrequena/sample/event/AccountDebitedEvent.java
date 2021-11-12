@@ -1,6 +1,5 @@
 package com.cjrequena.sample.event;
 
-import com.cjrequena.sample.dto.CreditBankAccountDTO;
 import com.cjrequena.sample.dto.DebitBankAccountDTO;
 import lombok.Builder;
 import lombok.Data;
