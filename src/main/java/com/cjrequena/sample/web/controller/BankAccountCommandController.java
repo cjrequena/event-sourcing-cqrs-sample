@@ -6,6 +6,10 @@ import com.cjrequena.sample.command.DebitBankAccountCommand;
 import com.cjrequena.sample.dto.BankAccountDTO;
 import com.cjrequena.sample.dto.CreditBankAccountDTO;
 import com.cjrequena.sample.dto.DebitBankAccountDTO;
+import com.cjrequena.sample.exception.controller.BadRequestControllerException;
+import com.cjrequena.sample.exception.controller.NotFoundControllerException;
+import com.cjrequena.sample.exception.service.AggregateVersionServiceException;
+import com.cjrequena.sample.exception.service.BankAccountNotFoundServiceException;
 import com.cjrequena.sample.service.BankAccountCommandService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -115,13 +119,19 @@ public class BankAccountCommandController {
   )
   @PostMapping(path = "/bank-accounts/credit", produces = {APPLICATION_JSON_VALUE})
   public ResponseEntity<Void> creaditAccount(@RequestBody CreditBankAccountDTO dto, BindingResult bindingResult,
-    HttpServletRequest request, UriComponentsBuilder ucBuilder){
-    CreditBankAccountCommand creditBankAccountCommand = CreditBankAccountCommand.builder().creditBankAccountDTO(dto).build();
-    this.bankAccountCommandService.process(creditBankAccountCommand);
-    // Headers
-    HttpHeaders headers = new HttpHeaders();
-    headers.set(CACHE_CONTROL, "no store, private, max-age=0");
-    return new ResponseEntity<>(headers, HttpStatus.ACCEPTED);
+    HttpServletRequest request, UriComponentsBuilder ucBuilder) throws NotFoundControllerException, BadRequestControllerException {
+    try {
+      CreditBankAccountCommand creditBankAccountCommand = CreditBankAccountCommand.builder().creditBankAccountDTO(dto).build();
+      this.bankAccountCommandService.process(creditBankAccountCommand);
+      // Headers
+      HttpHeaders headers = new HttpHeaders();
+      headers.set(CACHE_CONTROL, "no store, private, max-age=0");
+      return new ResponseEntity<>(headers, HttpStatus.ACCEPTED);
+    } catch (BankAccountNotFoundServiceException ex) {
+      throw new NotFoundControllerException();
+    } catch (AggregateVersionServiceException ex) {
+      throw new BadRequestControllerException(ex.getMessage());
+    }
   }
 
   @Operation(
@@ -146,12 +156,18 @@ public class BankAccountCommandController {
   )
   @PostMapping(path = "bank-accounts/debit", produces = {APPLICATION_JSON_VALUE})
   public ResponseEntity<Void> debitAccount(@RequestBody DebitBankAccountDTO dto, BindingResult bindingResult,
-    HttpServletRequest request, UriComponentsBuilder ucBuilder){
-    DebitBankAccountCommand debitBankAccountCommand = DebitBankAccountCommand.builder().debitBankAccountDTO(dto).build();
-    this.bankAccountCommandService.process(debitBankAccountCommand);
-    // Headers
-    HttpHeaders headers = new HttpHeaders();
-    headers.set(CACHE_CONTROL, "no store, private, max-age=0");
-    return new ResponseEntity<>(headers, HttpStatus.ACCEPTED);
+    HttpServletRequest request, UriComponentsBuilder ucBuilder) throws NotFoundControllerException, BadRequestControllerException {
+    try {
+      DebitBankAccountCommand debitBankAccountCommand = DebitBankAccountCommand.builder().debitBankAccountDTO(dto).build();
+      this.bankAccountCommandService.process(debitBankAccountCommand);
+      // Headers
+      HttpHeaders headers = new HttpHeaders();
+      headers.set(CACHE_CONTROL, "no store, private, max-age=0");
+      return new ResponseEntity<>(headers, HttpStatus.ACCEPTED);
+    } catch (BankAccountNotFoundServiceException ex) {
+      throw new NotFoundControllerException();
+    } catch (AggregateVersionServiceException ex) {
+      throw new BadRequestControllerException(ex.getMessage());
+    }
   }
 }
