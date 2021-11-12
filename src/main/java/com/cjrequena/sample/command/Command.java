@@ -9,6 +9,7 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @SuperBuilder
@@ -21,6 +22,10 @@ public abstract class Command<T> {
 
   @NotBlank
   protected UUID aggregateId;
+  @NotBlank
+  protected int version;
+  @NotNull
+  protected T data;
 
   public String getCommandType() {
     return this.getClass().getSimpleName();

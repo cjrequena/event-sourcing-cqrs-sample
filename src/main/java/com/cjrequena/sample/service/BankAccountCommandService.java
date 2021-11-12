@@ -1,5 +1,8 @@
 package com.cjrequena.sample.service;
 
+import com.cjrequena.sample.command.CreateBankAccountCommand;
+import com.cjrequena.sample.command.CreditBankAccountCommand;
+import com.cjrequena.sample.command.DebitBankAccountCommand;
 import com.cjrequena.sample.configuration.StreamChannelConfiguration;
 import com.cjrequena.sample.db.repository.BankAccountRepository;
 import com.cjrequena.sample.dto.BankAccountDTO;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -47,42 +51,61 @@ public class BankAccountCommandService {
     this.bankAccountRepository = bankAccountRepository;
   }
 
-  /**
-   *
-   * @param bankAccountDTO
-   */
   @Transactional
-  public BankAccountDTO createAccount(BankAccountDTO bankAccountDTO) {
-    UUID aggregateId = UUID.randomUUID();
+  public void process(CreateBankAccountCommand createBankAccountCommand) {
     AccountCreatedEvent accountCreatedEvent = new AccountCreatedEvent();
     accountCreatedEvent.setType(EEventType.ACCOUNT_CREATED_EVENT);
-    accountCreatedEvent.setAggregateId(aggregateId);
-    bankAccountDTO.setAccountId(aggregateId);
-    accountCreatedEvent.setData(bankAccountDTO);
+    accountCreatedEvent.setAggregateId(createBankAccountCommand.getAggregateId());
+    accountCreatedEvent.setData(createBankAccountCommand.getData());
+    accountCreatedEvent.setVersion(createBankAccountCommand.getVersion());
     KafkaEvent<AccountCreatedEvent> kafkaEvent = new KafkaEvent(accountCreatedEvent, eventOutputChannel);
     kafkaEvent.addHeader("operation", EEventType.ACCOUNT_CREATED_EVENT.getValue());
     applicationEventPublisher.publishEvent(kafkaEvent);
-    return bankAccountDTO;
   }
 
   @Transactional
-  public void creditMoneyToAccount(UUID accountId, CreditBankAccountDTO dto) {
-    AccountCreditedEvent creditedEvent = new AccountCreditedEvent();
-    creditedEvent.setType(EEventType.ACCOUNT_CREDITED_EVENT);
-    creditedEvent.setAggregateId(accountId);
-    creditedEvent.setData(dto);
-    KafkaEvent<AccountCreditedEvent> kafkaEvent = new KafkaEvent(creditedEvent, eventOutputChannel);
+  public void process(CreditBankAccountCommand creditBankAccountCommand) {
+
+    final BankAccountEntity bankAccountEntity;
+    final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(creditBankAccountCommand.getAggregateId());
+    if(bankAccountEntityOptional.isPresent()){
+      bankAccountEntity = bankAccountEntityOptional.get();
+      if(bankAccountEntity.getVersion()!= creditBankAccountCommand.getVersion()){
+        throw new RuntimeException("Not matching version"); // TODO
+      }
+    }else{
+      throw new RuntimeException("Not found"); // TODO
+    }
+
+    AccountCreditedEvent accountCreditedEvent = new AccountCreditedEvent();
+    accountCreditedEvent.setType(EEventType.ACCOUNT_CREDITED_EVENT);
+    accountCreditedEvent.setAggregateId(creditBankAccountCommand.getAggregateId());
+    accountCreditedEvent.setData(creditBankAccountCommand.getData());
+    accountCreditedEvent.setVersion(bankAccountEntity.getVersion() + 1 );
+    KafkaEvent<AccountCreditedEvent> kafkaEvent = new KafkaEvent(accountCreditedEvent, eventOutputChannel);
     kafkaEvent.addHeader("operation", EEventType.ACCOUNT_CREDITED_EVENT.getValue());
     applicationEventPublisher.publishEvent(kafkaEvent);
   }
 
   @Transactional
-  public void debitMoneyFromAccount(UUID accountId, DebitBankAccountDTO dto) {
+  public void process(DebitBankAccountCommand debitBankAccountCommand) {
+    final BankAccountEntity bankAccountEntity;
+    final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(debitBankAccountCommand.getAggregateId());
+    if(bankAccountEntityOptional.isPresent()){
+      bankAccountEntity = bankAccountEntityOptional.get();
+      if(bankAccountEntity.getVersion()!= debitBankAccountCommand.getVersion()){
+        throw new RuntimeException("Not matching version"); // TODO
+      }
+    }else{
+      throw new RuntimeException("Not found"); // TODO
+    }
+
     AccountDebitedEvent accountDebitedEvent = new AccountDebitedEvent();
     accountDebitedEvent.setType(EEventType.ACCOUNT_DEBITED_EVENT);
-    accountDebitedEvent.setAggregateId(accountId);
-    accountDebitedEvent.setData(dto);
-    KafkaEvent<AccountDebitedEvent> kafkaEvent = new KafkaEvent(accountDebitedEvent, eventOutputChannel);
+    accountDebitedEvent.setAggregateId(debitBankAccountCommand.getAggregateId());
+    accountDebitedEvent.setData(debitBankAccountCommand.getData());
+    accountDebitedEvent.setVersion(bankAccountEntity.getVersion() + 1 );
+    KafkaEvent<AccountCreditedEvent> kafkaEvent = new KafkaEvent(accountDebitedEvent, eventOutputChannel);
     kafkaEvent.addHeader("operation", EEventType.ACCOUNT_DEBITED_EVENT.getValue());
     applicationEventPublisher.publishEvent(kafkaEvent);
   }

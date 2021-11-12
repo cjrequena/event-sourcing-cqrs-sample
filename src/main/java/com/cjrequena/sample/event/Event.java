@@ -81,6 +81,9 @@ public abstract class Event<T> {
   @NotBlank
   protected UUID aggregateId;
 
+  @NotBlank
+  protected int version;
+
   /**
    * Get Headers from event
    * @return

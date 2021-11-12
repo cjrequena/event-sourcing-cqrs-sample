@@ -1,5 +1,8 @@
 package com.cjrequena.sample.web.controller;
 
+import com.cjrequena.sample.command.CreateBankAccountCommand;
+import com.cjrequena.sample.command.CreditBankAccountCommand;
+import com.cjrequena.sample.command.DebitBankAccountCommand;
 import com.cjrequena.sample.dto.BankAccountDTO;
 import com.cjrequena.sample.dto.CreditBankAccountDTO;
 import com.cjrequena.sample.dto.DebitBankAccountDTO;
@@ -79,12 +82,13 @@ public class BankAccountCommandController {
     path = "/bank-accounts",
     produces = {APPLICATION_JSON_VALUE}
   )
-  public ResponseEntity<Void> create(@Parameter @Valid @RequestBody BankAccountDTO dto, BindingResult bindingResult, HttpServletRequest request, UriComponentsBuilder ucBuilder)  {
-    dto = bankAccountCommandService.createAccount(dto);
+  public ResponseEntity<Void> createAccount(@Parameter @Valid @RequestBody BankAccountDTO dto, BindingResult bindingResult, HttpServletRequest request, UriComponentsBuilder ucBuilder)  {
+    CreateBankAccountCommand createBankAccountCommand = CreateBankAccountCommand.builder().bankAccountDTO(dto).build();
+    this.bankAccountCommandService.process(createBankAccountCommand);
     // Headers
     HttpHeaders headers = new HttpHeaders();
     headers.set(CACHE_CONTROL, "no store, private, max-age=0");
-    headers.set("account-id",dto.getAccountId().toString());
+    headers.set("account-id",createBankAccountCommand.getData().getAccountId().toString());
     return new ResponseEntity<>(headers, HttpStatus.ACCEPTED);
   }
 
@@ -110,9 +114,10 @@ public class BankAccountCommandController {
     }
   )
   @PostMapping(path = "/bank-accounts/credit", produces = {APPLICATION_JSON_VALUE})
-  public ResponseEntity<Void> creditMoneyToAccount(@RequestBody CreditBankAccountDTO dto, BindingResult bindingResult,
+  public ResponseEntity<Void> creaditAccount(@RequestBody CreditBankAccountDTO dto, BindingResult bindingResult,
     HttpServletRequest request, UriComponentsBuilder ucBuilder){
-    this.bankAccountCommandService.creditMoneyToAccount(dto.getAccountId(), dto);
+    CreditBankAccountCommand creditBankAccountCommand = CreditBankAccountCommand.builder().creditBankAccountDTO(dto).build();
+    this.bankAccountCommandService.process(creditBankAccountCommand);
     // Headers
     HttpHeaders headers = new HttpHeaders();
     headers.set(CACHE_CONTROL, "no store, private, max-age=0");
@@ -140,9 +145,10 @@ public class BankAccountCommandController {
     }
   )
   @PostMapping(path = "bank-accounts/debit", produces = {APPLICATION_JSON_VALUE})
-  public ResponseEntity<Void> debitMoneyFromAccount(@RequestBody DebitBankAccountDTO dto, BindingResult bindingResult,
-    HttpServletRequest request, UriComponentsBuilder ucBuilder) {
-    this.bankAccountCommandService.debitMoneyFromAccount(dto.getAccountId(), dto);
+  public ResponseEntity<Void> debitAccount(@RequestBody DebitBankAccountDTO dto, BindingResult bindingResult,
+    HttpServletRequest request, UriComponentsBuilder ucBuilder){
+    DebitBankAccountCommand debitBankAccountCommand = DebitBankAccountCommand.builder().debitBankAccountDTO(dto).build();
+    this.bankAccountCommandService.process(debitBankAccountCommand);
     // Headers
     HttpHeaders headers = new HttpHeaders();
     headers.set(CACHE_CONTROL, "no store, private, max-age=0");

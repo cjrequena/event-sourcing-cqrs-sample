@@ -39,4 +39,7 @@ public class BankAccountEntity {
   @Column(name = "creation_date")
   @Convert(converter = Jsr310JpaConverters.LocalDateConverter.class)
   private LocalDate creationDate;
+
+  @Column(name = "version")
+  private int version;
 }

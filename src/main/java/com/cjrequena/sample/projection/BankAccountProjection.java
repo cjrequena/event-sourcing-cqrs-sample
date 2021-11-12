@@ -37,6 +37,7 @@ public class BankAccountProjection {
       entity.setAccountId(dto.getAccountId());
       entity.setOwner(dto.getOwner());
       entity.setBalance(dto.getBalance());
+      entity.setVersion(event.getVersion());
       final Optional<BankAccountEntity> bankAccountEntityOptional = this.bankAccountRepository.findById(event.getAggregateId());
       if (bankAccountEntityOptional.isEmpty()) {
         this.bankAccountRepository.save(entity);
@@ -55,6 +56,7 @@ public class BankAccountProjection {
       if (bankAccountEntityOptional.isPresent()) {
         BankAccountEntity entity = bankAccountEntityOptional.get();
         entity.setBalance(entity.getBalance().add(dto.getAmount()));
+        entity.setVersion(event.getVersion());
         this.bankAccountRepository.save(entity);
       } else {
         log.error("Bank account {} does not exist", event.getAggregateId());
@@ -71,6 +73,7 @@ public class BankAccountProjection {
       if (bankAccountEntityOptional.isPresent()) {
         BankAccountEntity entity = bankAccountEntityOptional.get();
         entity.setBalance(entity.getBalance().subtract(dto.getAmount()));
+        entity.setVersion(event.getVersion());
         this.bankAccountRepository.save(entity);
       } else {
         log.error("Bank account {} does not exist", event.getAggregateId());
