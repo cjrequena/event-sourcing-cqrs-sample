@@ -1,5 +1,6 @@
 package com.cjrequena.sample.service;
 
+import com.cjrequena.sample.command.Command;
 import com.cjrequena.sample.command.CreateBankAccountCommand;
 import com.cjrequena.sample.command.CreditBankAccountCommand;
 import com.cjrequena.sample.command.DebitBankAccountCommand;
@@ -21,7 +22,6 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -49,6 +49,22 @@ public class BankAccountCommandService {
     this.applicationEventPublisher = applicationEventPublisher;
     this.eventOutputChannel = eventOutputChannel;
     this.bankAccountRepository = bankAccountRepository;
+  }
+
+  @Transactional
+  public void handler(Command command) throws BankAccountNotFoundServiceException, AggregateVersionServiceException {
+    log.debug("Command type: {} Command aggregate_id: {}",command.getCommandType(), command.getAggregateId());
+    switch (command.getCommandType()) {
+      case "CreateBankAccountCommand":
+        this.process((CreateBankAccountCommand) command);
+        break;
+      case "DebitBankAccountCommand":
+        this.process((DebitBankAccountCommand) command);
+        break;
+      case "CreditBankAccountCommand":
+        this.process((CreditBankAccountCommand) command);
+        break;
+    }
   }
 
   @Transactional
