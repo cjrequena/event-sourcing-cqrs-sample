@@ -11,10 +11,6 @@ import org.mapstruct.NullValueCheckStrategy;
  * <p>
  * <p>
  * @author cjrequena
- * @version 1.0
- * @since JDK1.8
- * @see
- *
  */
 @Mapper(
   componentModel = "spring",

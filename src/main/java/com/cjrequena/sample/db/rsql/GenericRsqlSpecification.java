@@ -30,8 +30,9 @@ import java.util.stream.Collectors;
 
 /**
  *
+ * <p></p>
+ * <p></p>
  * @author cjrequena
- *
  */
 @AllArgsConstructor
 @SuppressWarnings("unchecked")

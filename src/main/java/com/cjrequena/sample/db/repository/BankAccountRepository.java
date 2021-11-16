@@ -7,6 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
+/**
+ *
+ * <p></p>
+ * <p></p>
+ * @author cjrequena
+ */
 @Repository
 public interface BankAccountRepository extends JpaRepository<BankAccountEntity, UUID>, JpaSpecificationExecutor<BankAccountEntity> {
 }

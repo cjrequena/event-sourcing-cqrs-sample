@@ -9,6 +9,12 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+/**
+ *
+ * <p></p>
+ * <p></p>
+ * @author cjrequena
+ */
 @JsonPropertyOrder(value = {
   "accountId",
   "version",

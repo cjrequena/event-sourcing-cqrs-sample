@@ -8,6 +8,14 @@ import lombok.ToString;
 
 import java.io.Serializable;
 
+/**
+ * <p>
+ * <p>
+ * <p>
+ * <p>
+ *
+ * @author cjrequena
+ */
 @Data
 @ToString(callSuper = true, includeFieldNames = true)
 @EqualsAndHashCode(callSuper = false)

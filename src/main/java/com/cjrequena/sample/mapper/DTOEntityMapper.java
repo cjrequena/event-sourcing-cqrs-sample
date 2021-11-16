@@ -5,16 +5,10 @@ import org.mapstruct.MappingTarget;
 import java.util.List;
 
 /**
- * The Interface DTOEntityMapper.
  *
- * @param <D> the DTO type
- * @param <E> the Entity type
- *
+ * <p></p>
+ * <p></p>
  * @author cjrequena
- * @version 1.0
- * @since JDK1.8
- * @see
- *
  */
 public interface DTOEntityMapper<D, E> {
 

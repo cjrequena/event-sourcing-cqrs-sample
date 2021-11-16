@@ -12,6 +12,12 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+/**
+ *
+ * <p></p>
+ * <p></p>
+ * @author cjrequena
+ */
 @Data
 @ToString(callSuper = true, includeFieldNames = true)
 @EqualsAndHashCode(callSuper = false)

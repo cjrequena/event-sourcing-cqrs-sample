@@ -8,6 +8,9 @@ import java.util.Arrays;
 
 /**
  *
+ * <p></p>
+ * <p></p>
+ * @author cjrequena
  */
 public enum ESchemaType {
 

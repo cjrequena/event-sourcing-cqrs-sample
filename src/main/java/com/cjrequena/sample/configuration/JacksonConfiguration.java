@@ -13,7 +13,14 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.text.SimpleDateFormat;
 
-@Configuration
+/**
+ * <p>
+ * <p>
+ * <p>
+ * <p>
+ *
+ * @author cjrequena
+ */@Configuration
 public class JacksonConfiguration {
   /**
    * Jackson builder.

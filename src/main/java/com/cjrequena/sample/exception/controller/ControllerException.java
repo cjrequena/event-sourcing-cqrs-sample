@@ -4,6 +4,12 @@ import lombok.Getter;
 import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
+/**
+ *
+ * <p></p>
+ * <p></p>
+ * @author cjrequena
+ */
 @ToString
 public abstract class ControllerException extends Exception {
   @Getter

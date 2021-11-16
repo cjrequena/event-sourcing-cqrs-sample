@@ -8,11 +8,9 @@ import org.springframework.data.jpa.domain.Specification;
 
 /**
  *
+ * <p></p>
+ * <p></p>
  * @author cjrequena
- * @version 1.0
- * @since JDK1.8
- * @see
- *
  */
 public class CustomRsqlVisitor<T> implements RSQLVisitor<Specification<T>, Void> {
 

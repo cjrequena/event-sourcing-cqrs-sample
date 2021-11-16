@@ -17,6 +17,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+/**
+ *
+ * <p></p>
+ * <p></p>
+ * @author cjrequena
+ */
 @Slf4j
 @Component
 public class BankAccountProjection {

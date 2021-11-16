@@ -15,11 +15,9 @@ import java.util.stream.Collectors;
 
 /**
  *
+ * <p></p>
+ * <p></p>
  * @author cjrequena
- * @version 1.0
- * @since JDK1.8
- * @see
- *
  */
 public final class PageRequestBuilder {
 

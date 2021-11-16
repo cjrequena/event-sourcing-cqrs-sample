@@ -12,6 +12,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
+/**
+ * <p>
+ * <p>
+ * <p>
+ * <p>
+ *
+ * @author cjrequena
+ */
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor

@@ -17,13 +17,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * <p>
- * <p>
- * <p>
- * <p>
  *
+ * <p></p>
+ * <p></p>
  * @author cjrequena
- * @since JDK1.8
  */
 @SuppressWarnings("unchecked")
 @ControllerAdvice
