@@ -18,7 +18,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -51,7 +50,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 @RestController
 @RequestMapping(value = "/event-sourcing-cqrs-sample", headers = {"Accept-Version=" + VND_SAMPLE_SERVICE_V1})
-@Tag(name = "Bank Account Commands", description = "Bank Account Commands API")
 public class BankAccountCommandController {
 
   private BankAccountCommandService bankAccountCommandService;
@@ -65,8 +63,16 @@ public class BankAccountCommandController {
     summary = "Command for new bank account creation ",
     description = "Command for new bank account creation ",
     parameters = {
-      @Parameter(name = "accept-version", required = true, in = ParameterIn.HEADER, schema = @Schema(name = "accept-version", type = "string", allowableValues = {
-        VND_SAMPLE_SERVICE_V1})),
+      @Parameter(
+        name = "accept-version",
+        required = true,
+        in = ParameterIn.HEADER,
+        schema = @Schema(
+          name = "accept-version",
+          type = "string",
+          allowableValues = {VND_SAMPLE_SERVICE_V1}
+        )
+      ),
     },
     requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = BankAccountDTO.class)))
   )
@@ -106,8 +112,15 @@ public class BankAccountCommandController {
     summary = "Command for bank account credit operation ",
     description = "Command for bank account credit operation ",
     parameters = {
-      @Parameter(name = "accept-version", required = true, in = ParameterIn.HEADER, schema = @Schema(name = "accept-version", type = "string", allowableValues = {
-        VND_SAMPLE_SERVICE_V1})),
+      @Parameter(
+        name = "accept-version",
+        required = true,
+        in = ParameterIn.HEADER,
+        schema = @Schema(
+          name = "accept-version",
+          type = "string", allowableValues = {VND_SAMPLE_SERVICE_V1}
+        )
+      ),
     },
     requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CreditBankAccountDTO.class)))
   )

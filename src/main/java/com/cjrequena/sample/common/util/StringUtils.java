@@ -1,5 +1,6 @@
 package com.cjrequena.sample.common.util;
 
+
 import com.google.common.base.CaseFormat;
 
 import java.util.function.Function;
