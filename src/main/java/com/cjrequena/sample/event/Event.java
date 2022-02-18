@@ -4,11 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotBlank;
@@ -35,7 +31,7 @@ public abstract class Event<T> {
   // Unique id for the specific message. This id is globally unique
   @NotBlank
   @Builder.Default
-  protected String id = UUID.randomUUID().toString();
+  protected UUID id = UUID.randomUUID();
 
   // Identifies the context in which an event happened.
   @NotBlank

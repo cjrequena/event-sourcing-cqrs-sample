@@ -28,7 +28,7 @@ public class AccountDebitedEvent extends Event<DebitBankAccountDTO> implements S
 
   @Builder
   public AccountDebitedEvent(
-    @NotBlank String id,
+    @NotBlank UUID id,
     @NotBlank String source,
     @NotBlank String service,
     @NotBlank String specVersion,
@@ -41,6 +41,6 @@ public class AccountDebitedEvent extends Event<DebitBankAccountDTO> implements S
     ESchemaType dataSchema,
     @NotBlank UUID aggregateId,
     @NotBlank int version) {
-    super(id, source, service, specVersion, type, dataContentType, subject, time, data, dataBase64, dataSchema, aggregateId, version);
+    super(UUID.randomUUID(), source, service, specVersion, type, dataContentType, subject, time, data, dataBase64, dataSchema, aggregateId, version);
   }
 }

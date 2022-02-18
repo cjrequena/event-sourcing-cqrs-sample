@@ -37,7 +37,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "/event-sourcing-cqrs-sample", headers = {"Accept-Version=" + VND_SAMPLE_SERVICE_V1})
+@RequestMapping(value = "/event-sourcing-cqrs-sample")
 @Tag(name = "Bank Account Queries", description = "Bank Account Query Events API")
 @AllArgsConstructor
 public class BankAccountQueryController {

@@ -49,7 +49,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @SuppressWarnings("unchecked")
 @Slf4j
 @RestController
-@RequestMapping(value = "/event-sourcing-cqrs-sample", headers = {"Accept-Version=" + VND_SAMPLE_SERVICE_V1})
+@RequestMapping(value = "/event-sourcing-cqrs-sample")
 public class BankAccountCommandController {
 
   private BankAccountCommandService bankAccountCommandService;

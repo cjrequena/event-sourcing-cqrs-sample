@@ -28,7 +28,7 @@ public class AccountCreatedEvent extends Event<BankAccountDTO> implements Serial
 
   @Builder
   public AccountCreatedEvent(
-    @NotBlank String id,
+    @NotBlank UUID id,
     @NotBlank String source,
     @NotBlank String service,
     @NotBlank String specVersion,
@@ -41,7 +41,7 @@ public class AccountCreatedEvent extends Event<BankAccountDTO> implements Serial
     ESchemaType dataSchema,
     @NotBlank UUID aggregateId,
     @NotBlank int version) {
-    super(id, source, service, specVersion, type, dataContentType, subject, time, data, dataBase64, dataSchema, aggregateId, version);
+    super(UUID.randomUUID(), source, service, specVersion, type, dataContentType, subject, time, data, dataBase64, dataSchema, aggregateId, version);
   }
 
 }
