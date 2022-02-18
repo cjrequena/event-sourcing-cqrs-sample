@@ -30,7 +30,6 @@ public class AccountCreditedEvent extends Event<CreditBankAccountDTO> implements
   public AccountCreditedEvent(
     @NotBlank UUID id,
     @NotBlank String source,
-    @NotBlank String service,
     @NotBlank String specVersion,
     @NotNull EEventType type,
     String dataContentType,
@@ -41,6 +40,6 @@ public class AccountCreditedEvent extends Event<CreditBankAccountDTO> implements
     ESchemaType dataSchema,
     @NotBlank UUID aggregateId,
     @NotBlank int version) {
-    super(UUID.randomUUID(), source, service, specVersion, type, dataContentType, subject, time, data, dataBase64, dataSchema, aggregateId, version);
+    super(id, source, specVersion, type, dataContentType, subject, time, data, dataBase64, dataSchema, aggregateId, version);
   }
 }

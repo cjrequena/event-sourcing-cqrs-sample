@@ -18,6 +18,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -66,10 +67,16 @@ public class BankAccountCommandService {
   @Transactional
   public void process(CreateBankAccountCommand createBankAccountCommand) {
     AccountCreatedEvent accountCreatedEvent = AccountCreatedEvent.builder()
+      .id(UUID.randomUUID())
+      .source("https://event-sourcing-cqrs-sample.sample.cjrequena.com")
+      .specVersion("1.0")
+      .time(OffsetDateTime.now())
+      .dataContentType("application/json")
       .type(EEventType.ACCOUNT_CREATED_EVENT)
       .data(createBankAccountCommand.getData())
       .aggregateId(createBankAccountCommand.getAggregateId())
       .version(createBankAccountCommand.getVersion())
+      .specVersion("1.0")
       .build();
 
     KafkaEvent<AccountCreatedEvent> kafkaEvent = new KafkaEvent(accountCreatedEvent, eventOutputChannel);
@@ -82,6 +89,11 @@ public class BankAccountCommandService {
     this.validateAggregateState(creditBankAccountCommand.getAggregateId(), creditBankAccountCommand.getVersion());
 
     AccountCreditedEvent accountCreditedEvent = AccountCreditedEvent.builder()
+      .id(UUID.randomUUID())
+      .source("https://event-sourcing-cqrs-sample.sample.cjrequena.com")
+      .specVersion("1.0")
+      .time(OffsetDateTime.now())
+      .dataContentType("application/json")
       .type(EEventType.ACCOUNT_CREDITED_EVENT)
       .data(creditBankAccountCommand.getData())
       .aggregateId(creditBankAccountCommand.getAggregateId())
@@ -98,6 +110,11 @@ public class BankAccountCommandService {
     this.validateAggregateState(debitBankAccountCommand.getAggregateId(), debitBankAccountCommand.getVersion());
 
     AccountDebitedEvent accountDebitedEvent = AccountDebitedEvent.builder()
+      .id(UUID.randomUUID())
+      .source("https://event-sourcing-cqrs-sample.sample.cjrequena.com")
+      .specVersion("1.0")
+      .time(OffsetDateTime.now())
+      .dataContentType("application/json")
       .type(EEventType.ACCOUNT_DEBITED_EVENT)
       .data(debitBankAccountCommand.getData())
       .aggregateId(debitBankAccountCommand.getAggregateId())
